@@ -1,0 +1,66 @@
+<?php
+// ---- 简单 PHP 代理后端（Render/Koyeb 可用） ----
+header('Access-Control-Allow-Origin: *');
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
+header('Access-Control-Allow-Headers: Content-Type');
+
+if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+  http_response_code(204); exit;
+}
+
+$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+
+$UPSTREAM_SUBMIT = getenv('UPSTREAM_SUBMIT') ?: 'https://example.com/app/submitOrder';
+$UPSTREAM_QUERY  = getenv('UPSTREAM_QUERY')  ?: 'https://example.com/app/queryExpireTime';
+
+if ($path === '/' || $path === '/health') {
+  header('Content-Type: text/plain; charset=utf-8');
+  echo "ok"; exit;
+}
+
+if ($path === '/submitOrder') {
+  proxy_forward($UPSTREAM_SUBMIT);
+} elseif ($path === '/queryExpireTime') {
+  proxy_forward($UPSTREAM_QUERY);
+} else {
+  http_response_code(404);
+  header('Content-Type: text/plain; charset=utf-8');
+  echo "Not Found";
+}
+
+function proxy_forward(string $targetUrl): void {
+  $contentType = $_SERVER['CONTENT_TYPE'] ?? 'application/x-www-form-urlencoded';
+  $raw = file_get_contents('php://input');
+
+  $headers = [
+    "Content-Type: {$contentType}",
+    "User-Agent: DuoProxy/1.0"
+  ];
+
+  $opts = [
+    'http' => [
+      'method'  => 'POST',
+      'header'  => implode("\r\n", $headers)."\r\n",
+      'content' => $raw,
+      'ignore_errors' => true,
+      'timeout' => 20
+    ]
+  ];
+
+  $ctx = stream_context_create($opts);
+  $resp = @file_get_contents($targetUrl, false, $ctx);
+
+  $status = 200;
+  if (isset($http_response_header) && preg_match('#\s(\d{3})\s#', $http_response_header[0], $m)) {
+    $status = (int)$m[1];
+  }
+  http_response_code($status);
+
+  $ctype = 'application/json; charset=utf-8';
+  foreach (($http_response_header ?? []) as $h) {
+    if (stripos($h, 'Content-Type:') === 0) { $ctype = trim(substr($h,13)); break; }
+  }
+  header("Content-Type: {$ctype}");
+
+  echo $resp === false ? json_encode(['error' => 'upstream unreachable']) : $resp;
+}
