@@ -1,66 +1,71 @@
-<?php
-// ---- 简单 PHP 代理后端（Render/Koyeb 可用） ----
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: GET, POST, OPTIONS');
-header('Access-Control-Allow-Headers: Content-Type');
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Duolingo Super — активация и проверка</title>
+<style>
+:root{--bg1:#0f172a;--bg2:#0b2559;--text:#e5e7eb;--muted:#9ba3af;--accent:#2563eb;--accent2:#1d4ed8}
+*{box-sizing:border-box}html,body{height:100%}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+  background:radial-gradient(1200px 600px at 20% -10%,#123,#0b1c33 30%,transparent 60%),
+             linear-gradient(160deg,var(--bg1),var(--bg2));color:var(--text)}
+.container{max-width:1100px;margin:0 auto;padding:32px}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.brand{display:flex;gap:12px;font-weight:700;font-size:22px}
+.grid{display:grid;gap:24px}
+@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:rgba(17,25,40,.75);backdrop-filter:blur(10px);
+  border:1px solid rgba(255,255,255,.06);border-radius:16px;padding:24px}
+.card h2{margin:0 0 18px}
+label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
+.input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+  background:#0a1020;color:var(--text);outline:none}
+.input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
+.actions{margin-top:14px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
+  background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer}
+.btn:hover{background:var(--accent2)}
+.note{color:var(--muted);font-size:13px;margin-top:12px}
+.footer{margin-top:20px;text-align:center;color:var(--muted);font-size:12px}
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="brand">Duolingo Super</div>
+    <div style="opacity:.7;font-size:12px">Тестовый сайт</div>
+  </div>
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-  http_response_code(204); exit;
-}
+  <h1 style="margin:0 0 18px;font-size:34px;line-height:1.2">
+    Быстрая активация и проверка ваучера
+  </h1>
 
-$path = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
+  <div class="grid">
+    <div class="card">
+      <h2>Активация подписки</h2>
+      <form action="https://waiyu.pro/app/submitOrder" method="post" target="_blank" autocomplete="on">
+        <label for="email">Почта, привязанная к Duolingo</label>
+        <input id="email" name="email" type="email" required class="input" placeholder="name@example.com">
+        <label for="code" style="margin-top:12px">Код активации (ваучер)</label>
+        <input id="code" name="couponCode" required class="input" placeholder="Введите код">
+        <div class="actions"><button class="btn" type="submit">Активировать</button></div>
+        <div class="note">Если окно с результатом не открылось — разрешите всплывающие окна в браузере.</div>
+      </form>
+    </div>
 
-$UPSTREAM_SUBMIT = getenv('UPSTREAM_SUBMIT') ?: 'https://example.com/app/submitOrder';
-$UPSTREAM_QUERY  = getenv('UPSTREAM_QUERY')  ?: 'https://example.com/app/queryExpireTime';
+    <div class="card">
+      <h2>Проверка срока действия</h2>
+      <form action="https://waiyu.pro/app/queryExpireTime" method="post" target="_blank">
+        <label for="check">Код активации</label>
+        <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
+        <div class="actions"><button class="btn" type="submit">Проверить</button></div>
+        <div class="note">Результат откроется в новой вкладке.</div>
+      </form>
+    </div>
+  </div>
 
-if ($path === '/' || $path === '/health') {
-  header('Content-Type: text/plain; charset=utf-8');
-  echo "ok"; exit;
-}
-
-if ($path === '/submitOrder') {
-  proxy_forward($UPSTREAM_SUBMIT);
-} elseif ($path === '/queryExpireTime') {
-  proxy_forward($UPSTREAM_QUERY);
-} else {
-  http_response_code(404);
-  header('Content-Type: text/plain; charset=utf-8');
-  echo "Not Found";
-}
-
-function proxy_forward(string $targetUrl): void {
-  $contentType = $_SERVER['CONTENT_TYPE'] ?? 'application/x-www-form-urlencoded';
-  $raw = file_get_contents('php://input');
-
-  $headers = [
-    "Content-Type: {$contentType}",
-    "User-Agent: DuoProxy/1.0"
-  ];
-
-  $opts = [
-    'http' => [
-      'method'  => 'POST',
-      'header'  => implode("\r\n", $headers)."\r\n",
-      'content' => $raw,
-      'ignore_errors' => true,
-      'timeout' => 20
-    ]
-  ];
-
-  $ctx = stream_context_create($opts);
-  $resp = @file_get_contents($targetUrl, false, $ctx);
-
-  $status = 200;
-  if (isset($http_response_header) && preg_match('#\s(\d{3})\s#', $http_response_header[0], $m)) {
-    $status = (int)$m[1];
-  }
-  http_response_code($status);
-
-  $ctype = 'application/json; charset=utf-8';
-  foreach (($http_response_header ?? []) as $h) {
-    if (stripos($h, 'Content-Type:') === 0) { $ctype = trim(substr($h,13)); break; }
-  }
-  header("Content-Type: {$ctype}");
-
-  echo $resp === false ? json_encode(['error' => 'upstream unreachable']) : $resp;
-}
+  <div class="footer">© 2025</div>
+</div>
+</body>
+</html>
