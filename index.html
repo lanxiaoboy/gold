@@ -44,28 +44,139 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="grid">
     <div class="card">
       <h2>Активация подписки</h2>
-      <form action="https://waiyu.pro/app/submitOrder" method="post" target="_blank" autocomplete="on">
+      <!-- Убрали target/action, чтобы не открывать новую вкладку -->
+      <form id="form-activate" autocomplete="on">
         <label for="email">Почта, привязанная к Duolingo</label>
         <input id="email" name="email" type="email" required class="input" placeholder="name@example.com">
         <label for="code" style="margin-top:12px">Код активации (ваучер)</label>
         <input id="code" name="couponCode" required class="input" placeholder="Введите код">
-        <div class="actions"><button class="btn" type="submit">Активировать</button></div>
-        <div class="note">Если окно с результатом не открылось — разрешите всплывающие окна в браузере.</div>
+        <div class="actions"><button class="btn" type="button" id="activateBtn">Активировать</button></div>
+        <div class="note">Результат появится во всплывающем окне на этой странице.</div>
       </form>
     </div>
 
     <div class="card">
       <h2>Проверка срока действия</h2>
-      <form action="https://waiyu.pro/app/queryExpireTime" method="post" target="_blank">
+      <form id="form-check">
         <label for="check">Код активации</label>
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
-        <div class="actions"><button class="btn" type="submit">Проверить</button></div>
-        <div class="note">Результат откроется в новой вкладке.</div>
+        <div class="actions"><button class="btn" type="button" id="checkBtn">Проверить</button></div>
+        <div class="note">Результат появится во всплывающем окне.</div>
       </form>
     </div>
   </div>
 
   <div class="footer">© 2025</div>
 </div>
+
+<!-- Модальное окно -->
+<div id="dlg" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:9999;">
+  <div style="width:min(520px,92%);background:#0f172a;border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:22px 20px;color:#e2e8f0;box-shadow:0 10px 40px rgba(0,0,0,.5)">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      <strong id="dlg-title" style="font-size:16px;">Сообщение</strong>
+    </div>
+    <div id="dlg-body" style="white-space:pre-wrap;word-break:break-word;line-height:1.6"></div>
+    <div style="text-align:right;margin-top:16px">
+      <button id="dlg-close" style="background:#2563eb;border:none;color:#fff;padding:9px 16px;border-radius:10px;cursor:pointer">Понятно</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  // Селекторы под твой HTML
+  const $ = (sel) => document.querySelector(sel);
+  const email       = $('#email');        // поле email
+  const codeInput   = $('#code');         // поле кода (активация)
+  const checkInput  = $('#check');        // поле кода (проверка)
+  const activateBtn = $('#activateBtn');  // кнопка Активировать
+  const checkBtn    = $('#checkBtn');     // кнопка Проверить
+
+  // Модалка
+  const dlg = $('#dlg'), dlgTitle = $('#dlg-title'), dlgBody = $('#dlg-body'), dlgClose = $('#dlg-close');
+  function showDialog(title, msg){ dlgTitle.textContent = title||'Сообщение'; dlgBody.textContent = msg||''; dlg.style.display='flex'; }
+  function hideDialog(){ dlg.style.display='none'; }
+  dlgClose.addEventListener('click', hideDialog);
+  dlg.addEventListener('click', (e) => { if (e.target === dlg) hideDialog(); });
+
+  // Русские подсказки для required
+  function setValidity(el, message){
+    if(!el) return;
+    el.addEventListener('invalid', (e)=>{ e.target.setCustomValidity(message); });
+    el.addEventListener('input',  (e)=>{ e.target.setCustomValidity(''); });
+  }
+  setValidity(email,      'Пожалуйста, введите корректный адрес электронной почты.');
+  setValidity(codeInput,  'Пожалуйста, введите код ваучера.');
+  setValidity(checkInput, 'Пожалуйста, введите код для проверки.');
+
+  // Универсальный POST
+  async function postForm(url, dataObj){
+    const body = new URLSearchParams(dataObj).toString();
+    const res  = await fetch(url, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body });
+    const text = await res.text();
+    let json; try{ json = JSON.parse(text); }catch{ json = null; }
+    return { ok:res.ok, status:res.status, text, json };
+  }
+
+  // Сначала пробуем через Netlify-прокси /api/..., при 404 — прямой вызов waiyu.pro (может быть заблокирован CORS, но попробуем)
+  async function postAPI(endpoint, data){
+    let r = await postForm('/api/'+endpoint, data);
+    if (r.status === 404) {
+      try { r = await postForm('https://waiyu.pro/app/'+endpoint, data); } catch (_) {}
+    }
+    return r;
+  }
+
+  function extractMessage(payload){
+    if (!payload) return '';
+    if (payload.json) {
+      const j = payload.json;
+      return j.msg || j.message || j.data || JSON.stringify(j);
+    }
+    return payload.text;
+  }
+
+  // Обработчики
+  activateBtn?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const mail = email?.value.trim();
+    const code = codeInput?.value.trim();
+    if (!mail || !code) { showDialog('Подсказка', 'Пожалуйста, введите email и код ваучера.'); return; }
+
+    const original = activateBtn.textContent;
+    activateBtn.disabled = true; activateBtn.textContent = 'Отправка…';
+    try {
+      const r = await postAPI('submitOrder', { email: mail, couponCode: code });
+      const msg = extractMessage(r);
+      if (r.ok) showDialog('Отправлено', msg || 'Запрос отправлен, подождите результат.');
+      else      showDialog('Ошибка отправки', msg || ('Сервер вернул статус ' + r.status));
+    } catch (err) {
+      showDialog('Сетевая ошибка', err?.message || String(err));
+    } finally {
+      activateBtn.disabled = false; activateBtn.textContent = original || 'Активировать';
+    }
+  });
+
+  checkBtn?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const code = checkInput?.value.trim();
+    if (!code) { showDialog('Подсказка', 'Пожалуйста, введите код для проверки.'); return; }
+
+    const original = checkBtn.textContent;
+    checkBtn.disabled = true; checkBtn.textContent = 'Проверка…';
+    try {
+      const r = await postAPI('queryExpireTime', { couponCode: code });
+      const msg = extractMessage(r);
+      if (r.ok) showDialog('Результат проверки', msg || 'Ответ получен.');
+      else      showDialog('Ошибка проверки', msg || ('Сервер вернул статус ' + r.status));
+    } catch (err) {
+      showDialog('Сетевая ошибка', err?.message || String(err));
+    } finally {
+      checkBtn.disabled = false; checkBtn.textContent = original || 'Проверить';
+    }
+  });
+})();
+</script>
 </body>
 </html>
