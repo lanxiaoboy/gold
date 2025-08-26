@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Duolingo Super — активация и проверка</title>
 <style>
 :root{--bg1:#0f172a;--bg2:#0b2559;--text:#e5e7eb;--muted:#9ba3af;--accent:#2563eb;--accent2:#1d4ed8}
@@ -24,10 +24,19 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
 .actions{margin-top:14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
-  background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer}
+  background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
 .btn:hover{background:var(--accent2)}
 .note{color:var(--muted);font-size:13px;margin-top:12px}
 .footer{margin-top:20px;text-align:center;color:var(--muted);font-size:12px}
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(2,8,23,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999}
+.modal{width:min(560px,92vw);background:rgba(17,25,40,.96);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
+.modal-title{font-size:18px;font-weight:700;margin:2px 0 10px}
+.modal-body{color:var(--text);line-height:1.55;white-space:pre-wrap}
+.modal-actions{margin-top:16px;text-align:right}
+.badge-ok{color:#22c55e}
+.badge-err{color:#f87171}
 </style>
 </head>
 <body>
@@ -44,24 +53,32 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="grid">
     <div class="card">
       <h2>Активация подписки</h2>
-      <!-- Убрали target/action, чтобы не открывать новую вкладку -->
-      <form id="form-activate" autocomplete="on">
+      <form id="form-activate" action="https://waiyu.pro/app/submitOrder" method="post" target="_blank" autocomplete="on">
         <label for="email">Почта, привязанная к Duolingo</label>
         <input id="email" name="email" type="email" required class="input" placeholder="name@example.com">
+
         <label for="code" style="margin-top:12px">Код активации (ваучер)</label>
         <input id="code" name="couponCode" required class="input" placeholder="Введите код">
-        <div class="actions"><button class="btn" type="button" id="activateBtn">Активировать</button></div>
-        <div class="note">Результат появится во всплывающем окне на этой странице.</div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Активировать</button>
+        </div>
+
+        <div class="note">Если окно с результатом не открылось — разрешите всплывающие окна в браузере.</div>
       </form>
     </div>
 
     <div class="card">
       <h2>Проверка срока действия</h2>
-      <form id="form-check">
+      <form id="form-check" action="https://waiyu.pro/app/queryExpireTime" method="post" target="_blank">
         <label for="check">Код активации</label>
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
-        <div class="actions"><button class="btn" type="button" id="checkBtn">Проверить</button></div>
-        <div class="note">Результат появится во всплывающем окне.</div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Проверить</button>
+        </div>
+
+        <div class="note">Результат откроется в новой вкладке.</div>
       </form>
     </div>
   </div>
@@ -69,114 +86,123 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="footer">© 2025</div>
 </div>
 
-<!-- Модальное окно -->
-<div id="dlg" style="position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:9999;">
-  <div style="width:min(520px,92%);background:#0f172a;border:1px solid rgba(148,163,184,.25);border-radius:14px;padding:22px 20px;color:#e2e8f0;box-shadow:0 10px 40px rgba(0,0,0,.5)">
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M12 9v4m0 4h.01M12 2a10 10 0 100 20 10 10 0 000-20z" stroke="#60a5fa" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      <strong id="dlg-title" style="font-size:16px;">Сообщение</strong>
-    </div>
-    <div id="dlg-body" style="white-space:pre-wrap;word-break:break-word;line-height:1.6"></div>
-    <div style="text-align:right;margin-top:16px">
-      <button id="dlg-close" style="background:#2563eb;border:none;color:#fff;padding:9px 16px;border-radius:10px;cursor:pointer">Понятно</button>
+<!-- Modal -->
+<div class="modal-backdrop" id="dlg">
+  <div class="modal">
+    <div class="modal-title" id="dlgTitle">Сообщение</div>
+    <div class="modal-body" id="dlgBody"></div>
+    <div class="modal-actions">
+      <button class="btn" type="button" id="dlgOk">Понятно</button>
     </div>
   </div>
 </div>
 
 <script>
-(() => {
-  // Селекторы под твой HTML
-  const $ = (sel) => document.querySelector(sel);
-  const email       = $('#email');        // поле email
-  const codeInput   = $('#code');         // поле кода (активация)
-  const checkInput  = $('#check');        // поле кода (проверка)
-  const activateBtn = $('#activateBtn');  // кнопка Активировать
-  const checkBtn    = $('#checkBtn');     // кнопка Проверить
+/** 中文 → 俄文 翻译（先精确匹配，再包含替换） */
+function translateZhToRu(raw) {
+  if (!raw) return raw;
+  const exact = {
+    "系统未知异常": "Системная неизвестная ошибка",
+    "未知异常！请联系管理员处理！": "Неизвестная ошибка. Обратитесь к администратору.",
+    "充值成功": "Активация прошла успешно",
+    "激活成功": "Активация прошла успешно",
+    "订单提交成功": "Заявка успешно отправлена",
+    "无效的激活码": "Недействительный код активации",
+    "券码不存在或已使用": "Код не существует или уже использован",
+    "参数错误": "Неверные параметры запроса",
+    "验证码错误": "Неверный проверочный код",
+    "余额不足": "Недостаточно средств",
+    "请求过于频繁": "Слишком частые запросы",
+    "服务器繁忙": "Сервер перегружен. Повторите позже",
+    "失败": "Не удалось",
+    "成功": "Успешно"
+  };
+  if (exact[raw]) return exact[raw];
 
-  // Модалка
-  const dlg = $('#dlg'), dlgTitle = $('#dlg-title'), dlgBody = $('#dlg-body'), dlgClose = $('#dlg-close');
-  function showDialog(title, msg){ dlgTitle.textContent = title||'Сообщение'; dlgBody.textContent = msg||''; dlg.style.display='flex'; }
-  function hideDialog(){ dlg.style.display='none'; }
-  dlgClose.addEventListener('click', hideDialog);
-  dlg.addEventListener('click', (e) => { if (e.target === dlg) hideDialog(); });
+  const contains = [
+    ["未知异常", "Неизвестная ошибка"],
+    ["成功", "успешно"],
+    ["失败", "не удалось"],
+    ["错误", "ошибка"],
+    ["不存在", "не существует"],
+    ["已使用", "уже использован"],
+    ["频繁", "слишком часто"],
+    ["繁忙", "перегружен"]
+  ];
 
-  // Русские подсказки для required
-  function setValidity(el, message){
-    if(!el) return;
-    el.addEventListener('invalid', (e)=>{ e.target.setCustomValidity(message); });
-    el.addEventListener('input',  (e)=>{ e.target.setCustomValidity(''); });
+  let msg = String(raw);
+  for (const [zh, ru] of contains) {
+    if (msg.includes(zh)) msg = msg.replaceAll(zh, ru);
   }
-  setValidity(email,      'Пожалуйста, введите корректный адрес электронной почты.');
-  setValidity(codeInput,  'Пожалуйста, введите код ваучера.');
-  setValidity(checkInput, 'Пожалуйста, введите код для проверки.');
+  return msg;
+}
 
-  // Универсальный POST
-  async function postForm(url, dataObj){
-    const body = new URLSearchParams(dataObj).toString();
-    const res  = await fetch(url, { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body });
-    const text = await res.text();
-    let json; try{ json = JSON.parse(text); }catch{ json = null; }
-    return { ok:res.ok, status:res.status, text, json };
-  }
+/* 简单的弹窗 UI */
+const dlg = document.getElementById('dlg');
+const dlgTitle = document.getElementById('dlgTitle');
+const dlgBody = document.getElementById('dlgBody');
+const dlgOk = document.getElementById('dlgOk');
+dlgOk.addEventListener('click', () => dlg.style.display = 'none');
 
-  // Сначала пробуем через Netlify-прокси /api/..., при 404 — прямой вызов waiyu.pro (может быть заблокирован CORS, но попробуем)
-  async function postAPI(endpoint, data){
-    let r = await postForm('/api/'+endpoint, data);
-    if (r.status === 404) {
-      try { r = await postForm('https://waiyu.pro/app/'+endpoint, data); } catch (_) {}
-    }
-    return r;
-  }
+function showModal(msg, ok) {
+  dlgTitle.innerHTML = ok
+    ? '<span class="badge-ok">Готово</span>'
+    : '<span class="badge-err">Ошибка отправки</span>';
+  dlgBody.textContent = msg;
+  dlg.style.display = 'flex';
+}
 
-  function extractMessage(payload){
-    if (!payload) return '';
-    if (payload.json) {
-      const j = payload.json;
-      return j.msg || j.message || j.data || JSON.stringify(j);
-    }
-    return payload.text;
-  }
+/* 拦截两个表单，改为 AJAX 提交并在本页弹窗显示结果 */
+function bindAjax(formId) {
+  const form = document.getElementById(formId);
+  const btn = form.querySelector('button[type="submit"]');
 
-  // Обработчики
-  activateBtn?.addEventListener('click', async (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
-    const mail = email?.value.trim();
-    const code = codeInput?.value.trim();
-    if (!mail || !code) { showDialog('Подсказка', 'Пожалуйста, введите email и код ваучера.'); return; }
 
-    const original = activateBtn.textContent;
-    activateBtn.disabled = true; activateBtn.textContent = 'Отправка…';
+    // 按钮状态
+    const oldText = btn.textContent;
+    btn.disabled = true;
+    btn.textContent = 'Отправка…';
+
     try {
-      const r = await postAPI('submitOrder', { email: mail, couponCode: code });
-      const msg = extractMessage(r);
-      if (r.ok) showDialog('Отправлено', msg || 'Запрос отправлен, подождите результат.');
-      else      showDialog('Ошибка отправки', msg || ('Сервер вернул статус ' + r.status));
+      const body = new URLSearchParams(new FormData(form)).toString();
+
+      const resp = await fetch(form.action, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+        body,
+        // 如果你使用了 Netlify 的反代规则走同源，可以取消下面一行：
+        // mode: 'cors'
+      });
+
+      let data, txt;
+      try { data = await resp.json(); }
+      catch { txt = await resp.text(); }
+
+      // 兼容多种返回结构
+      const code = (data && (data.code ?? data.status)) ?? (resp.ok ? 200 : 500);
+      let msg = (data && (data.msg || data.message || data.data))
+                || txt
+                || (resp.ok ? 'Успешно' : 'Неизвестная ошибка');
+
+      // 中文 → 俄文
+      msg = translateZhToRu(msg);
+
+      const isOk = Number(code) === 200 || Number(code) === 0 || /успех|успеш/i.test(msg);
+      showModal(msg, isOk);
+
     } catch (err) {
-      showDialog('Сетевая ошибка', err?.message || String(err));
+      showModal('Сетевая ошибка. Повторите позже.', false);
     } finally {
-      activateBtn.disabled = false; activateBtn.textContent = original || 'Активировать';
+      btn.disabled = false;
+      btn.textContent = oldText;
     }
   });
+}
 
-  checkBtn?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    const code = checkInput?.value.trim();
-    if (!code) { showDialog('Подсказка', 'Пожалуйста, введите код для проверки.'); return; }
-
-    const original = checkBtn.textContent;
-    checkBtn.disabled = true; checkBtn.textContent = 'Проверка…';
-    try {
-      const r = await postAPI('queryExpireTime', { couponCode: code });
-      const msg = extractMessage(r);
-      if (r.ok) showDialog('Результат проверки', msg || 'Ответ получен.');
-      else      showDialog('Ошибка проверки', msg || ('Сервер вернул статус ' + r.status));
-    } catch (err) {
-      showDialog('Сетевая ошибка', err?.message || String(err));
-    } finally {
-      checkBtn.disabled = false; checkBtn.textContent = original || 'Проверить';
-    }
-  });
-})();
+bindAjax('form-activate');
+bindAjax('form-check');
 </script>
 </body>
 </html>
