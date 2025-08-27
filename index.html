@@ -38,7 +38,7 @@ body{
 .brand img{width:46px;height:46px;object-fit:contain;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 .brand-title{
   font-weight:800;
-  font-size:30px;
+  font-size:30px;           /* 与主标题同级的小一号 */
   letter-spacing:.2px;
 }
 
@@ -120,27 +120,6 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);
   padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none
 }
-
-/* ---- Success Result Card (inline) ---- */
-.result-area { margin: 18px 0; }
-.result-card{
-  background: rgba(17,25,40,.96);
-  border: 1px solid var(--card-border);
-  border-radius: 16px;
-  padding: 18px 20px;
-  line-height: 1.6;
-}
-.result-card h3{
-  margin: 0 0 10px;
-  color: #22c55e;
-  font-size: 18px;
-}
-.result-card ul{
-  margin: 8px 0 10px;
-  padding-left: 18px;
-}
-.result-card li{ margin: 2px 0; }
-.result-note{ color: #9ba3af; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -170,7 +149,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
     <!-- 激活 -->
     <div class="card">
       <h2>Активация подписки</h2>
-      <form id="form-activate" action="/submitOrder" method="post" target="_blank" autocomplete="on">
+      <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" target="_blank" autocomplete="on">
         <label for="email">
           Почта, привязанная к Duolingo
           <a class="help" href="help.html" target="_blank" data-tip="Как найти почту Duolingo?">?</a>
@@ -191,7 +170,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
     <!-- 查询 -->
     <div class="card">
       <h2>Проверка срока действия</h2>
-      <form id="form-check" action="/queryExpireTime" method="post" target="_blank">
+      <form id="form-check" action="/.netlify/functions/queryExpireTime" method="post" target="_blank">
         <label for="check">Код активации</label>
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
 
@@ -203,9 +182,6 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
       </form>
     </div>
   </div>
-
-  <!-- 结果卡片容器（初始隐藏） -->
-  <div id="result-area" class="result-area" hidden></div>
 
   <div class="footer">© 2019–2025. Этот сайт использует общедоступные конечные точки для обработки запросов.</div>
 </div>
@@ -226,6 +202,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 (() => {
   const wrap = document.getElementById('support');
   const btn  = document.getElementById('supportBtn');
+  const panel= document.getElementById('supportPanel');
   btn.addEventListener('click', () => wrap.classList.toggle('open'));
   document.addEventListener('click', (e)=>{
     if (!wrap.contains(e.target)) wrap.classList.remove('open');
@@ -282,56 +259,20 @@ function showModal(msg, ok){
   dlg.style.display='flex';
 }
 
-/* 从上游中文成功页中解析日期 */
-function parseSuccessText(txt){
-  if (!txt || typeof txt !== 'string') return null;
-  const looksLike =
-    txt.includes('恭喜您成功加入多邻国家庭成员计划') ||
-    txt.includes('激活时间') || txt.includes('有效期至');
-  if (!looksLike) return null;
-
-  const start = (txt.match(/激活时间[:：]\s*(\d{4}-\d{2}-\d{2})/) || [])[1] || '—';
-  const end   = (txt.match(/有效期至[:：]\s*(\d{4}-\d{2}-\d{2})/) || [])[1] || '—';
-  return { start, end };
-}
-
-/* 渲染结果卡片 */
-function renderResultCard({ start, end }){
-  const area = document.getElementById('result-area');
-  area.innerHTML = `
-    <div class="result-card">
-      <h3>Активация выполнена</h3>
-      <p>Поздравляем! Вы успешно подключены к семейному плану Duolingo Super.
-         Перезапустите приложение, чтобы увидеть доступные преимущества.</p>
-      <ul>
-        <li><b>Дата активации:</b> ${start}</li>
-        <li><b>Действительно до:</b> ${end}</li>
-      </ul>
-      <p class="result-note"><b>iOS:</b> Главная → птица (вверху справа) → шестерёнка → срок подписки.</p>
-      <p class="result-note"><b>Android:</b> из-за особенностей интерфейса срок может не отображаться —
-         ориентируйтесь на дату заказа, гарантия 1 год.</p>
-    </div>`;
-  area.hidden = false;
-}
-
-/* 绑定表单：同源端点；成功则显示结果卡片；失败则弹窗或回退新标签 */
+/* 绑定表单：强制同源端点 + 失败回退到新标签 */
 function bindAjax(formId){
   const form=document.getElementById(formId);
   const btn=form.querySelector('button[type="submit"]');
-  const area=document.getElementById('result-area');
 
   form.addEventListener('submit', async (ev)=>{
     ev.preventDefault();
 
-    // 每次提交先清空/隐藏结果卡片
-    area.hidden = true;
-    area.innerHTML = '';
-
+    // 将任意外域 action 映射为本站 /submitOrder 或 /queryExpireTime
     const actionUrl=new URL(form.action, location.href);
     let endpoint=actionUrl.href;
     if(actionUrl.origin !== location.origin){
-      const lastSeg = actionUrl.pathname.split('/').pop();
-      endpoint = '/'+lastSeg;
+      const lastSeg = actionUrl.pathname.split('/').pop(); // submitOrder / queryExpireTime
+      endpoint = '/'+lastSeg; // 同源，交给 Netlify _redirects 反代
     }
 
     const old=btn.textContent; btn.disabled=true; btn.textContent='Отправка…';
@@ -347,16 +288,10 @@ function bindAjax(formId){
       let data,txt;
       try{ data=await resp.json(); } catch{ txt=await resp.text(); }
 
-      // 如果返回的是成功页 HTML/文本，尝试解析并展示结果卡片
-      if (txt) {
-        const info = parseSuccessText(txt);
-        if (info) { renderResultCard(info); return; }
-      }
-
-      // 否则按 JSON/文本弹窗提示
       const code=(data && (data.code ?? data.status)) ?? (resp.ok?200:500);
       let msg =(data && (data.msg || data.message || data.data)) || txt || (resp.ok?'Успешно':'Неизвестная ошибка');
       msg=translateZhToRu(msg);
+
       const ok = Number(code)===200 || Number(code)===0 || /успех|успеш/i.test(msg);
       showModal(msg, ok);
 
@@ -366,7 +301,7 @@ function bindAjax(formId){
         const fallback=document.createElement('form');
         fallback.method='POST';
         fallback.target='_blank';
-        fallback.action=form.action;
+        fallback.action=form.action;  // 原始上游地址
         for(const [k,v] of new FormData(form).entries()){
           const input=document.createElement('input');
           input.type='hidden'; input.name=k; input.value=v;
