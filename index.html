@@ -6,42 +6,79 @@
 <title>Duolingo Super — сервис активации</title>
 <style>
 :root{
-  --bg1:#0b1430; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
-  --accent:#2563eb; --accent2:#1d4ed8; --card:rgba(17,25,40,.78); --card-border:rgba(255,255,255,.08)
+  --bg1:#0b1430;
+  --bg2:#0b2559;
+  --text:#e5e7eb;
+  --muted:#9ba3af;
+  --accent:#2563eb;
+  --accent2:#1d4ed8;
+  --card: rgba(17,25,40,.78);
+  --card-border: rgba(255,255,255,.08);
 }
-*{box-sizing:border-box} html,body{height:100%}
+/* 基础 */
+*{box-sizing:border-box}
+html,body{height:100%}
 body{
-  margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;color:var(--text);
-  background:radial-gradient(1200px 700px at 20% -10%, rgba(15,30,60,.55), transparent 60%),
-             linear-gradient(rgba(9,16,36,.62), rgba(9,16,36,.62)),
-             url('assets/img/bg.jpg') center/cover fixed no-repeat;
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 700px at 20% -10%, rgba(15,30,60,.55), transparent 60%),
+    linear-gradient(rgba(9,16,36,.62), rgba(9,16,36,.62)),
+    url('assets/img/bg.jpg') center/cover fixed no-repeat;
 }
 .container{max-width:1100px;margin:0 auto;padding:28px 28px 34px}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+/* 左侧：logo + 标题 */
 .brand{display:flex;align-items:center;gap:14px}
 .brand img{width:46px;height:46px;object-fit:contain;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 .brand-title{font-weight:800;font-size:30px;letter-spacing:.2px}
+/* 右侧：联系客服 + 下拉二维码 */
 .support{position:relative}
-.support-btn{appearance:none;border:0;cursor:pointer;background:var(--accent);color:#fff;font-weight:600;padding:10px 14px;border-radius:12px;transition:.15s}
+.support-btn{
+  appearance:none;border:0;cursor:pointer;
+  background:var(--accent);color:#fff;font-weight:600;
+  padding:10px 14px;border-radius:12px;transition:.15s;
+}
 .support-btn:hover{background:var(--accent2)}
-.support-panel{position:absolute;right:0;top:48px;z-index:30;background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px;display:none;min-width:240px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.support-panel{
+  position:absolute;right:0;top:48px;z-index:30;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:14px;padding:14px;display:none;min-width:240px;
+  box-shadow:0 10px 40px rgba(0,0,0,.35);
+}
 .support.open .support-panel{display:block}
-.support-panel h4{margin:0 0 10px;font-size:14px;color:var(--muted);font-weight:600}
+.support-panel h4{margin:0 0 10px 0;font-size:14px;color:var(--muted);font-weight:600}
 .support-panel img{display:block;width:240px;max-width:70vw;border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+/* 标题 */
 h1{margin:10px 0 18px;font-size:30px;line-height:1.25}
+/* 栅格 + 卡片 */
 .grid{display:grid;gap:24px}
 @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
-.card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--card-border);border-radius:16px;padding:22px}
+.card{
+  background:var(--card);
+  backdrop-filter:blur(10px);
+  border:1px solid var(--card-border);
+  border-radius:16px;padding:22px
+}
 .card h2{margin:0 0 16px}
+/* 表单 */
 label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
-.input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0a1020;color:var(--text);outline:none}
+.input{
+  width:100%;padding:14px 16px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#0a1020;color:var(--text);outline:none
+}
 .input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
 .actions{margin-top:14px}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
+  background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s
+}
 .btn:hover{background:var(--accent2)}
 .note{color:var(--muted);font-size:13px;margin-top:12px}
+/* footer */
 .footer{margin-top:24px;text-align:center;color:var(--muted);font-size:12px}
-
 /* Modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(2,8,23,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999}
 .modal{width:min(560px,92vw);background:rgba(17,25,40,.96);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
@@ -50,15 +87,26 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .modal-actions{margin-top:16px;text-align:right}
 .badge-ok{color:#22c55e}
 .badge-err{color:#f87171}
-
-/* 小问号 */
-.help{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:8px;border-radius:50%;background:#3b82f6;color:#fff;font-weight:800;font-size:12px;text-decoration:none;line-height:1}
+/* 邮箱帮助问号 */
+.help{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;margin-left:8px;border-radius:50%;
+  background:#3b82f6;color:#fff;font-weight:800;font-size:12px;
+  text-decoration:none;line-height:1
+}
 .help[data-tip]{position:relative}
-.help[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:125%;white-space:nowrap;background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none}
+.help[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:125%;white-space:nowrap;
+  background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);
+  padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none
+}
 </style>
 </head>
 <body>
 <div class="container">
+  <!-- 顶部：Logo + 标题 + 支持 -->
   <div class="header">
     <div class="brand">
       <img src="assets/img/logo.jpg" alt="Duolingo" />
@@ -68,15 +116,18 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
     <div class="support" id="support">
       <button class="support-btn" type="button" id="supportBtn">Связаться с поддержкой</button>
       <div class="support-panel" id="supportPanel">
-        <h4>Сканируйте QR-код для связи</h4>
+        <h4>Сканируйте QR-код, чтобы связаться</h4>
         <img src="assets/img/QRcode.jpg" alt="QR code" />
       </div>
     </div>
   </div>
 
+  <!-- 副标题 -->
   <h1>Быстрая активация и проверка ваучера</h1>
 
+  <!-- 两列卡片 -->
   <div class="grid">
+    <!-- 激活 -->
     <div class="card">
       <h2>Активация подписки</h2>
       <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" autocomplete="on">
@@ -97,13 +148,18 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
       </form>
     </div>
 
+    <!-- 查询 -->
     <div class="card">
       <h2>Проверка срока действия</h2>
       <form id="form-check" action="/.netlify/functions/queryExpireTime" method="post">
         <label for="check">Код активации</label>
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
-        <div class="actions"><button class="btn" type="submit">Проверить</button></div>
-        <div class="note">Результат будет показан на этой странице.</div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Проверить</button>
+        </div>
+
+        <div class="note">Ответ будет показан в этом окне.</div>
       </form>
     </div>
   </div>
@@ -116,28 +172,41 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="modal">
     <div class="modal-title" id="dlgTitle">Сообщение</div>
     <div class="modal-body" id="dlgBody"></div>
-    <div class="modal-actions"><button class="btn" type="button" id="dlgOk">Понятно</button></div>
+    <div class="modal-actions">
+      <!-- 固定为 OK -->
+      <button class="btn" type="button" id="dlgOk" aria-label="OK">OK</button>
+    </div>
   </div>
 </div>
 
 <script>
-/* 支持面板开关 */
+/* ===== 固定 UI 文案，防止被覆盖 ===== */
+const UI = {
+  ok: 'OK',
+  titleOk: 'Готово',
+  titleErr: 'Ошибка'
+};
+document.addEventListener('DOMContentLoaded', () => {
+  const okBtn = document.getElementById('dlgOk');
+  if (okBtn) okBtn.textContent = UI.ok;
+});
+
+/* 打开/关闭“联系客服”下拉 */
 (() => {
   const wrap = document.getElementById('support');
-  document.getElementById('supportBtn').addEventListener('click', () => wrap.classList.toggle('open'));
-  document.addEventListener('click', e => { if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
+  const btn  = document.getElementById('supportBtn');
+  btn.addEventListener('click', () => wrap.classList.toggle('open'));
+  document.addEventListener('click', (e)=>{ if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
 })();
 
-/* 简单翻译表 */
+/** 中文 → 俄文 翻译（先精确匹配，再包含替换） */
 function translateZhToRu(raw){
   if(!raw) return raw;
   const exact={
     "系统未知异常":"Системная неизвестная ошибка",
     "未知异常！请联系管理员处理！":"Неизвестная ошибка. Обратитесь к администратору.",
-    "充值成功":"Активация выполнена",
-    "激活成功":"Активация выполнена",
-    "加入成功":"Активация выполнена",
-    "查询成功":"Проверка выполнена",
+    "充值成功":"Активация прошла успешно",
+    "激活成功":"Активация прошла успешно",
     "订单提交成功":"Заявка успешно отправлена",
     "无效的激活码":"Недействительный код активации",
     "券码不存在或已使用":"Код не существует или уже использован",
@@ -150,82 +219,93 @@ function translateZhToRu(raw){
     "成功":"Успешно"
   };
   if (exact[raw]) return exact[raw];
-  let msg = String(raw);
-  const contains=[["未知异常","Неизвестная ошибка"],["成功","успешно"],["失败","не удалось"],["错误","ошибка"],["不存在","не существует"],["已使用","уже использован"],["频繁","слишком часто"],["繁忙","перегружен"]];
-  for(const [zh,ru] of contains) if(msg.includes(zh)) msg = msg.replaceAll(zh,ru);
+  const contains=[
+    ["未知异常","Неизвестная ошибка"],
+    ["成功","успешно"],
+    ["失败","не удалось"],
+    ["错误","ошибка"],
+    ["不存在","не существует"],
+    ["已使用","уже использован"],
+    ["频繁","слишком часто"],
+    ["繁忙","перегружен"]
+  ];
+  let msg=String(raw);
+  for (const [zh,ru] of contains){ if(msg.includes(zh)) msg=msg.replaceAll(zh,ru); }
   return msg;
 }
 
-/* 弹窗 */
-const dlg = document.getElementById('dlg');
-const dlgTitle = document.getElementById('dlgTitle');
-const dlgBody = document.getElementById('dlgBody');
-document.getElementById('dlgOk').addEventListener('click',()=>dlg.style.display='none');
-function showModal(msg, ok){
-  dlgTitle.innerHTML = ok ? '<span class="badge-ok">Готово</span>' : '<span class="badge-err">Ошибка</span>';
-  dlgBody.innerHTML = msg; // 允许换行/加粗
+/* 日期工具：按俄罗斯习惯 DD/MM/YYYY */
+function formatRU(d){
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yyyy = d.getFullYear();
+  return `${dd}/${mm}/${yyyy}`;
+}
+function datePlusOneYear(){
+  const d=new Date(); d.setFullYear(d.getFullYear()+1); return d;
+}
+
+/* 简易弹窗 */
+const dlg=document.getElementById('dlg');
+const dlgTitle=document.getElementById('dlgTitle');
+const dlgBody=document.getElementById('dlgBody');
+const dlgOk=document.getElementById('dlgOk');
+dlgOk.addEventListener('click',()=>dlg.style.display='none');
+function showModal(msg, isOk){
+  dlgTitle.innerHTML = isOk
+    ? `<span class="badge-ok">${UI.titleOk}</span>`
+    : `<span class="badge-err">${UI.titleErr}</span>`;
+  dlgBody.textContent = msg;
   dlg.style.display='flex';
 }
 
-/* 工具：格式化 DD/MM/YYYY */
-function oneYearFromNowDMY(){
-  const d = new Date(); d.setFullYear(d.getFullYear()+1);
-  const dd = String(d.getDate()).padStart(2,'0');
-  const mm = String(d.getMonth()+1).padStart(2,'0');
-  const yy = d.getFullYear();
-  return `${dd}/${mm}/${yy}`;
-}
-
-/* 绑定两个表单：Functions 走 JSON，其它走表单编码 */
+/* 绑定表单（JSON 提交；根据表单类型自定义成功提示） */
 function bindAjax(formId, kind){
-  const form = document.getElementById(formId);
-  const btn  = form.querySelector('button[type="submit"]');
+  const form=document.getElementById(formId);
+  const btn=form.querySelector('button[type="submit"]');
 
   form.addEventListener('submit', async (ev)=>{
     ev.preventDefault();
+    const payload = Object.fromEntries(new FormData(form).entries());
 
-    const actionUrl = new URL(form.action, location.href);
-    const endpoint  = actionUrl.href;
-    const isFn      = endpoint.includes('/.netlify/functions/');
+    const old=btn.textContent; btn.disabled=true; btn.textContent='Отправка…';
 
-    const formObj = Object.fromEntries(new FormData(form).entries());
-    const fetchOpts = isFn
-      ? { method:'POST', headers:{'Content-Type':'application/json;charset=UTF-8'}, body: JSON.stringify(formObj) }
-      : { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'}, body: new URLSearchParams(formObj).toString() };
-
-    const keep = btn.textContent; btn.disabled = true; btn.textContent = 'Отправка…';
     try{
-      const resp = await fetch(endpoint, fetchOpts);
-      let data, txt;
-      try{ data = await resp.json(); } catch{ txt = await resp.text(); }
+      const resp=await fetch(form.action,{
+        method:'POST',
+        headers:{'Content-Type':'application/json;charset=UTF-8'},
+        body: JSON.stringify(payload)
+      });
 
-      const code = (data && (data.code ?? data.status)) ?? (resp.ok ? 200 : 500);
-      let msg = (data && (data.msg || data.message || data.data)) || txt || (resp.ok ? 'Успешно' : 'Неизвестная ошибка');
+      let data,txt;
+      try{ data=await resp.json(); } catch{ txt=await resp.text(); }
 
-      // 成功路径：自定义话术（避免中俄混排）
-      const ok = Number(code) === 200 || Number(code) === 0 || /успех|успеш/i.test(translateZhToRu(msg));
+      const code=(data && (data.code ?? data.status)) ?? (resp.ok?200:500);
+      let msg =(data && (data.msg || data.message || data.data)) || txt || (resp.ok?'Успешно':'Неизвестная ошибка');
+      msg=translateZhToRu(msg);
+
+      const ok = Number(code)===200 || Number(code)===0 || /успех|успеш/i.test(msg);
 
       if (ok){
+        const end = formatRU(datePlusOneYear());
         if (kind === 'activate'){
-          showModal('<b>Активация выполнена.</b>', true);
-        }else{
-          // 查询成功：只显示预估到期日（本地 +1 年），不展示“本地计算”说明
-          const date = oneYearFromNowDMY();
-          showModal(`<b>Код действителен.</b><br><br>Примерная дата окончания: <b>${date}</b>`, true);
+          msg = `Подписка успешно активирована.\nПримерная дата окончания: ${end}`;
+        } else if (kind === 'query'){
+          msg = `Код действителен.\nПримерная дата окончания: ${end}`;
         }
-      }else{
-        showModal(translateZhToRu(msg), false);
       }
-    }catch(e){
+      showModal(msg, ok);
+
+    }catch(err){
       showModal('Сетевая ошибка. Повторите позже.', false);
     }finally{
-      btn.disabled = false; btn.textContent = keep;
+      btn.disabled=false; btn.textContent=old;
     }
   });
 }
 
 bindAjax('form-activate','activate');
-bindAjax('form-check','check');
+bindAjax('form-check','query');
 </script>
 </body>
 </html>
