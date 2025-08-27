@@ -3,53 +3,46 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Duolingo Super — активация и проверка</title>
+<title>Duolingo Super — сервис активации</title>
 <style>
 :root{
   --bg1:#0f172a; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
   --accent:#2563eb; --accent2:#1d4ed8; --panel:#111928;
 }
-/* 基础与布局 */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
   color:var(--text);
-  /* ① 使用原图 + 更深的半透明蓝色叠加（两层），保证对比度 */
   background:
-    radial-gradient(1200px 600px at 20% -10%,
-      rgba(18,40,80,.55), rgba(6,14,28,.6) 35%, rgba(0,0,0,0) 60%),
+    radial-gradient(1200px 600px at 20% -10%, rgba(18,40,80,.55), rgba(6,14,28,.6) 35%, rgba(0,0,0,0) 60%),
     linear-gradient(160deg, rgba(15,23,42,.78), rgba(11,37,89,.78)),
     url("/assets/img/bg.jpg") center / cover no-repeat fixed;
 }
 @media (max-width:900px){ body{ background-attachment: scroll; } }
 
 .container{max-width:1100px;margin:0 auto;padding:28px}
-.header{
-  position:relative;
-  display:flex;align-items:center;justify-content:space-between;
-  margin-bottom:12px; gap:16px;
-}
+.header{position:relative;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:16px}
 
-/* 品牌：左上角 LOGO + 文本 */
+/* 左上：LOGO + 文本 */
 .brand{display:flex;align-items:center;gap:12px}
 .logo{
   height: clamp(26px, 3.2vw, 42px);
   width:auto; object-fit:contain; border-radius:8px;
   box-shadow:0 6px 16px rgba(0,0,0,.28);
 }
-/* ② 与下方 H1 一样的大（H1 当前为 34px） */
-.brand-title{font-weight:800;font-size:34px;line-height:1.2}
+/* E版：字号从34px→30px */
+.brand-title{font-weight:800;font-size:30px;line-height:1.2}
 
- /* 右上角“联系客服”按钮 + 下拉二维码 */
+/* 右上：联系客服按钮 + 下拉二维码 */
 .support{position:relative}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
   background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
 .btn:hover{background:var(--accent2)}
 .btn:disabled{opacity:.7;cursor:not-allowed}
 
-/* 下拉面板（二维码）——C版基础上维持 3/4 尺寸 */
+/* 下拉面板（二维码） */
 .qr-panel{
   position:absolute; right:0; top:calc(100% + 10px);
   width:min(270px, 75vw); z-index:50;
@@ -68,6 +61,7 @@ body{
 .qr-img{width:100%; height:auto; display:block; border-radius:10px}
 .qr-note{margin-top:8px; font-size:13px; color:var(--muted); text-align:center}
 
+/* 表单与卡片 */
 .grid{display:grid;gap:24px}
 @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
 .card{
@@ -81,6 +75,17 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
 .actions{margin-top:14px}
 .note{color:var(--muted);font-size:13px;margin-top:12px}
+
+/* 蓝色问号“帮助”按钮 */
+.help{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;margin-left:6px;border-radius:50%;
+  border:1px solid currentColor;color:var(--accent);
+  font-weight:800;text-decoration:none;line-height:1;transform:translateY(-1px);
+}
+.help:hover{filter:brightness(1.2)}
+.help:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+
 .footer{margin-top:20px;text-align:center;color:var(--muted);font-size:12px}
 
 /* 弹窗 */
@@ -96,10 +101,10 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 <body>
 <div class="container">
   <div class="header">
-    <!-- 左：LOGO + “Duolingo Super”文本（字号已加大） -->
+    <!-- 左：LOGO + 文本（E版标题文字已替换） -->
     <div class="brand">
       <img src="/assets/img/logo.jpg" alt="Duolingo Super" class="logo">
-      <span class="brand-title">Duolingo Super</span>
+      <span class="brand-title">Duolingo Super — сервис активации</span>
     </div>
 
     <!-- 右：联系客服按钮 + 下拉二维码 -->
@@ -114,7 +119,8 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
     </div>
   </div>
 
-  <h1 style="margin:0 0 18px;font-size:34px;line-height:1.2">
+  <!-- E版：H1 字号从34px→30px -->
+  <h1 style="margin:0 0 18px;font-size:30px;line-height:1.2">
     Быстрая активация и проверка ваучера
   </h1>
 
@@ -122,7 +128,14 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
     <div class="card">
       <h2>Активация подписки</h2>
       <form id="form-activate" action="https://waiyu.pro/app/submitOrder" method="post" target="_blank" autocomplete="on">
-        <label for="email">Почта, привязанная к Duolingo</label>
+        <label for="email">
+          Почта, привязанная к Duolingo
+          <a href="/help-email.html"
+             class="help"
+             title="Как найти почту Duolingo?"
+             target="_blank" rel="noopener"
+             aria-label="Как найти почту Duolingo?">?</a>
+        </label>
         <input id="email" name="email" type="email" required class="input" placeholder="name@example.com">
 
         <label for="code" style="margin-top:12px">Код активации (ваучер)</label>
@@ -143,14 +156,15 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
 
         <div class="actions">
-          <button class="btn" type="submit">Проверить</button></div>
+          <button class="btn" type="submit">Проверить</button>
+        </div>
 
         <div class="note">Результат откроется в новой вкладке.</div>
       </form>
     </div>
   </div>
 
-  <div class="footer">© 2025</div>
+  <div class="footer">© 2019–2025. Этот сайт использует общедоступные конечные точки для обработки запросов.</div>
 </div>
 
 <!-- 弹窗 -->
@@ -196,7 +210,7 @@ function translateZhToRu(raw) {
     "参数错误": "Неверные параметры запроса",
     "验证码错误": "Неверный проверочный код",
     "余额不足": "Недостаточно средств",
-    "请求过于频繁": "Слишком частые запросы",
+    "请求过于频繁": "Слишком частые请求",
     "服务器繁忙": "Сервер перегружен. Повторите позже",
     "失败": "Не удалось",
     "成功": "Успешно"
@@ -236,7 +250,7 @@ function showModal(msg, ok) {
   dlg.style.display = 'flex';
 }
 
-/* 拦截两个表单，改为 AJAX 提交并在本页弹窗显示结果 */
+/* 拦截两个表单，AJAX 提交并在本页弹窗显示结果 */
 function bindAjax(formId) {
   const form = document.getElementById(formId);
   const btn = form.querySelector('button[type="submit"]');
