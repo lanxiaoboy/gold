@@ -1,1 +1,61 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Как найти почту Duolingo — справка</title>
+<style>
+:root{
+  --bg1:#0b1430; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
+  --accent:#2563eb; --accent2:#1d4ed8; --card:rgba(17,25,40,.78); --card-border:rgba(255,255,255,.08);
+}
+*{box-sizing:border-box} html,body{height:100%}
+body{
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--text);
+  background:
+    radial-gradient(1200px 700px at 20% -10%, rgba(15,30,60,.55), transparent 60%),
+    linear-gradient(rgba(9,16,36,.62), rgba(9,16,36,.62)),
+    url('assets/img/bg.jpg') center/cover fixed no-repeat;
+}
+.container{max-width:900px;margin:0 auto;padding:32px}
+.card{
+  background:var(--card); backdrop-filter:blur(10px); border:1px solid var(--card-border);
+  border-radius:16px; padding:24px;
+}
+h1{margin:0 0 10px; font-size:28px}
+p{margin:8px 0; color:var(--muted)}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:10px 14px; border-radius:12px; border:0; cursor:pointer;
+  background:var(--accent); color:#fff; font-weight:600; text-decoration:none;
+}
+.btn:hover{background:var(--accent2)}
+.hr{height:1px; background:rgba(255,255,255,.08); margin:16px 0}
+.ul{margin:10px 0 0 18px; color:#cbd5e1}
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Добро пожаловать!</h1>
+      <p>Это тестовая страница справки. Здесь позже появятся подсказки, как найти электронную почту, привязанную к Duolingo.</p>
+
+      <div class="hr"></div>
+
+      <h2 style="margin:0 0 8px;font-size:20px">Черновик подсказок (заглушка):</h2>
+      <ul class="ul">
+        <li>Откройте приложение Duolingo → профиль (иконка вверху).</li>
+        <li>Перейдите в «Настройки» → «Аккаунт».</li>
+        <li>В разделе «Электронная почта» будет указан текущий адрес.</li>
+      </ul>
+
+      <p style="margin-top:14px;color:#9aa3b0">Если этого недостаточно — свяжитесь с поддержкой через кнопку на главной странице.</p>
+
+      <div style="margin-top:16px">
+        <a class="btn" href="index.html">← Вернуться на главную</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
 
