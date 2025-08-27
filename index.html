@@ -6,89 +6,97 @@
 <title>Duolingo Super — сервис активации</title>
 <style>
 :root{
-  --bg1:#0f172a; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
-  --accent:#2563eb; --accent2:#1d4ed8; --panel:#111928;
+  --bg1:#0b1430;
+  --bg2:#0b2559;
+  --text:#e5e7eb;
+  --muted:#9ba3af;
+  --accent:#2563eb;
+  --accent2:#1d4ed8;
+  --card: rgba(17,25,40,.78);
+  --card-border: rgba(255,255,255,.08);
 }
+
+/* 基础 */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
   color:var(--text);
+  /* 背景图 + 深色蓝遮罩（对比度更高） */
   background:
-    radial-gradient(1200px 600px at 20% -10%, rgba(18,40,80,.55), rgba(6,14,28,.6) 35%, rgba(0,0,0,0) 60%),
-    linear-gradient(160deg, rgba(15,23,42,.78), rgba(11,37,89,.78)),
-    url("/assets/img/bg.jpg") center / cover no-repeat fixed;
+    radial-gradient(1200px 700px at 20% -10%, rgba(15,30,60,.55), transparent 60%),
+    linear-gradient(rgba(9,16,36,.62), rgba(9,16,36,.62)),
+    url('assets/img/bg.jpg') center/cover fixed no-repeat;
 }
-@media (max-width:900px){ body{ background-attachment: scroll; } }
 
-.container{max-width:1100px;margin:0 auto;padding:28px}
-.header{position:relative;display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:16px}
+.container{max-width:1100px;margin:0 auto;padding:28px 28px 34px}
+.header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
 
-/* 左上：LOGO + 文本 */
-.brand{display:flex;align-items:center;gap:12px}
-.logo{
-  height: clamp(26px, 3.2vw, 42px);
-  width:auto; object-fit:contain; border-radius:8px;
-  box-shadow:0 6px 16px rgba(0,0,0,.28);
+/* 左侧：logo + 标题 */
+.brand{display:flex;align-items:center;gap:14px}
+.brand img{width:46px;height:46px;object-fit:contain;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.brand-title{
+  font-weight:800;
+  font-size:30px;           /* 与主标题同级的小一号 */
+  letter-spacing:.2px;
 }
-/* E版：字号从34px→30px */
-.brand-title{font-weight:800;font-size:30px;line-height:1.2}
 
-/* 右上：联系客服按钮 + 下拉二维码 */
+/* 右侧：联系客服 + 下拉二维码 */
 .support{position:relative}
-.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
-  background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
-.btn:hover{background:var(--accent2)}
-.btn:disabled{opacity:.7;cursor:not-allowed}
-
-/* 下拉面板（二维码） */
-.qr-panel{
-  position:absolute; right:0; top:calc(100% + 10px);
-  width:min(270px, 75vw); z-index:50;
-  background:rgba(17,25,40,.96);
-  border:1px solid rgba(255,255,255,.08); border-radius:14px;
-  box-shadow:0 12px 28px rgba(0,0,0,.35);
-  padding:14px; opacity:0; transform:translateY(-8px); pointer-events:none;
-  transition:opacity .18s ease, transform .18s ease;
+.support-btn{
+  appearance:none;border:0;cursor:pointer;
+  background:var(--accent);color:#fff;font-weight:600;
+  padding:10px 14px;border-radius:12px;transition:.15s;
 }
-.qr-panel::before{
-  content:""; position:absolute; right:18px; top:-7px; width:12px; height:12px;
-  background:rgba(17,25,40,.96); border:1px solid rgba(255,255,255,.08);
-  transform:rotate(45deg); border-right:none; border-bottom:none;
+.support-btn:hover{background:var(--accent2)}
+.support-panel{
+  position:absolute;right:0;top:48px;z-index:30;
+  background:var(--card);border:1px solid var(--card-border);
+  border-radius:14px;padding:14px;display:none;min-width:240px;
+  box-shadow:0 10px 40px rgba(0,0,0,.35);
 }
-.qr-panel.open{opacity:1; transform:translateY(0); pointer-events:auto}
-.qr-img{width:100%; height:auto; display:block; border-radius:10px}
-.qr-note{margin-top:8px; font-size:13px; color:var(--muted); text-align:center}
+.support.open .support-panel{display:block}
+.support-panel h4{margin:0 0 10px 0;font-size:14px;color:var(--muted);font-weight:600}
+.support-panel img{
+  display:block;width:240px;max-width:70vw;border-radius:10px;
+  border:1px solid rgba(255,255,255,.06);
+}
 
-/* 表单与卡片 */
+/* 标题 */
+h1{margin:10px 0 18px;font-size:30px;line-height:1.25}
+
+/* 栅格 + 卡片 */
 .grid{display:grid;gap:24px}
 @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
 .card{
-  background:rgba(17,25,40,.75); backdrop-filter:blur(10px);
-  border:1px solid rgba(255,255,255,.06); border-radius:16px; padding:24px
+  background:var(--card);
+  backdrop-filter:blur(10px);
+  border:1px solid var(--card-border);
+  border-radius:16px;padding:22px
 }
-.card h2{margin:0 0 18px}
+.card h2{margin:0 0 16px}
+
+/* 表单 */
 label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
-.input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
-  background:#0a1020;color:var(--text);outline:none}
+.input{
+  width:100%;padding:14px 16px;border-radius:12px;
+  border:1px solid rgba(255,255,255,.12);
+  background:#0a1020;color:var(--text);outline:none
+}
 .input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
 .actions{margin-top:14px}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
+  background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s
+}
+.btn:hover{background:var(--accent2)}
 .note{color:var(--muted);font-size:13px;margin-top:12px}
 
-/* 蓝色问号“帮助”按钮 */
-.help{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:18px;height:18px;margin-left:6px;border-radius:50%;
-  border:1px solid currentColor;color:var(--accent);
-  font-weight:800;text-decoration:none;line-height:1;transform:translateY(-1px);
-}
-.help:hover{filter:brightness(1.2)}
-.help:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+/* footer */
+.footer{margin-top:24px;text-align:center;color:var(--muted);font-size:12px}
 
-.footer{margin-top:20px;text-align:center;color:var(--muted);font-size:12px}
-
-/* 弹窗 */
+/* Modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(2,8,23,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999}
 .modal{width:min(560px,92vw);background:rgba(17,25,40,.96);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
 .modal-title{font-size:18px;font-weight:700;margin:2px 0 10px}
@@ -96,45 +104,55 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .modal-actions{margin-top:16px;text-align:right}
 .badge-ok{color:#22c55e}
 .badge-err{color:#f87171}
+
+/* 邮箱帮助问号 */
+.help{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;margin-left:8px;border-radius:50%;
+  background:#3b82f6;color:#fff;font-weight:800;font-size:12px;
+  text-decoration:none;line-height:1
+}
+.help[data-tip]{position:relative}
+.help[data-tip]:hover::after{
+  content:attr(data-tip);
+  position:absolute;left:50%;transform:translateX(-50%);
+  bottom:125%;white-space:nowrap;
+  background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);
+  padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none
+}
 </style>
 </head>
 <body>
 <div class="container">
+  <!-- 顶部：Logo + 标题 + 支持 -->
   <div class="header">
-    <!-- 左：LOGO + 文本（E版标题文字已替换） -->
     <div class="brand">
-      <img src="/assets/img/logo.jpg" alt="Duolingo Super" class="logo">
-      <span class="brand-title">Duolingo Super — сервис активации</span>
+      <img src="assets/img/logo.jpg" alt="Duolingo" />
+      <div class="brand-title">Duolingo Super — сервис активации</div>
     </div>
 
-    <!-- 右：联系客服按钮 + 下拉二维码 -->
-    <div class="support">
-      <button class="btn" type="button" id="btnSupport" aria-expanded="false" aria-controls="qrPanel">
-        Связаться с поддержкой
-      </button>
-      <div class="qr-panel" id="qrPanel" role="region" aria-label="QR-код для связи с поддержкой">
-        <img src="/assets/img/QRcode.jpg" alt="QR-код поддержки" class="qr-img">
-        <div class="qr-note">Сканируйте QR-код, чтобы связаться с поддержкой</div>
+    <div class="support" id="support">
+      <button class="support-btn" type="button" id="supportBtn">Связаться с поддержкой</button>
+      <div class="support-panel" id="supportPanel">
+        <h4>Сканируйте QR-код, чтобы связаться</h4>
+        <!-- 3/4 尺寸的二维码 -->
+        <img src="assets/img/QRcode.jpg" alt="QR code" />
       </div>
     </div>
   </div>
 
-  <!-- E版：H1 字号从34px→30px -->
-  <h1 style="margin:0 0 18px;font-size:30px;line-height:1.2">
-    Быстрая активация и проверка ваучера
-  </h1>
+  <!-- 副标题 -->
+  <h1>Быстрая активация и проверка ваучера</h1>
 
+  <!-- 两列卡片 -->
   <div class="grid">
+    <!-- 激活 -->
     <div class="card">
       <h2>Активация подписки</h2>
       <form id="form-activate" action="https://waiyu.pro/app/submitOrder" method="post" target="_blank" autocomplete="on">
         <label for="email">
           Почта, привязанная к Duolingo
-          <a href="/help-email.html"
-             class="help"
-             title="Как найти почту Duolingo?"
-             target="_blank" rel="noopener"
-             aria-label="Как найти почту Duolingo?">?</a>
+          <a class="help" href="help.html" target="_blank" data-tip="Как найти почту Duolingo?">?</a>
         </label>
         <input id="email" name="email" type="email" required class="input" placeholder="name@example.com">
 
@@ -149,6 +167,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
       </form>
     </div>
 
+    <!-- 查询 -->
     <div class="card">
       <h2>Проверка срока действия</h2>
       <form id="form-check" action="https://waiyu.pro/app/queryExpireTime" method="post" target="_blank">
@@ -167,7 +186,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="footer">© 2019–2025. Этот сайт использует общедоступные конечные точки для обработки запросов.</div>
 </div>
 
-<!-- 弹窗 -->
+<!-- Modal -->
 <div class="modal-backdrop" id="dlg">
   <div class="modal">
     <div class="modal-title" id="dlgTitle">Сообщение</div>
@@ -179,119 +198,128 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 </div>
 
 <script>
-/* 右上角支持按钮：切换下拉二维码，点击外部区域自动关闭 */
-(function(){
-  const btn = document.getElementById('btnSupport');
-  const panel = document.getElementById('qrPanel');
-  function close(){ panel.classList.remove('open'); btn.setAttribute('aria-expanded','false'); }
-  function toggle(e){
-    e.stopPropagation();
-    const open = panel.classList.toggle('open');
-    btn.setAttribute('aria-expanded', open ? 'true' : 'false');
-  }
-  btn.addEventListener('click', toggle);
+/* 打开/关闭“联系客服”下拉 */
+(() => {
+  const wrap = document.getElementById('support');
+  const btn  = document.getElementById('supportBtn');
+  const panel= document.getElementById('supportPanel');
+  btn.addEventListener('click', () => wrap.classList.toggle('open'));
   document.addEventListener('click', (e)=>{
-    if (!panel.contains(e.target) && !btn.contains(e.target)) close();
-  }, {passive:true});
-  window.addEventListener('keydown', (e)=>{ if(e.key==='Escape') close(); });
+    if (!wrap.contains(e.target)) wrap.classList.remove('open');
+  });
 })();
 
 /** 中文 → 俄文 翻译（先精确匹配，再包含替换） */
-function translateZhToRu(raw) {
-  if (!raw) return raw;
-  const exact = {
-    "系统未知异常": "Системная неизвестная ошибка",
-    "未知异常！请联系管理员处理！": "Неизвестная ошибка. Обратитесь к администратору.",
-    "充值成功": "Активация прошла успешно",
-    "激活成功": "Активация прошла успешно",
-    "订单提交成功": "Заявка успешно отправлена",
-    "无效的激活码": "Недействительный код активации",
-    "券码不存在或已使用": "Код не существует или уже использован",
-    "参数错误": "Неверные параметры запроса",
-    "验证码错误": "Неверный проверочный код",
-    "余额不足": "Недостаточно средств",
-    "请求过于频繁": "Слишком частые请求",
-    "服务器繁忙": "Сервер перегружен. Повторите позже",
-    "失败": "Не удалось",
-    "成功": "Успешно"
+function translateZhToRu(raw){
+  if(!raw) return raw;
+  const exact={
+    "系统未知异常":"Системная неизвестная ошибка",
+    "未知异常！请联系管理员处理！":"Неизвестная ошибка. Обратитесь к администратору.",
+    "充值成功":"Активация прошла успешно",
+    "激活成功":"Активация прошла успешно",
+    "订单提交成功":"Заявка успешно отправлена",
+    "无效的激活码":"Недействительный код активации",
+    "券码不存在或已使用":"Код не существует или уже использован",
+    "参数错误":"Неверные параметры запроса",
+    "验证码错误":"Неверный проверочный код",
+    "余额不足":"Недостаточно средств",
+    "请求过于频繁":"Слишком частые запросы",
+    "服务器繁忙":"Сервер перегружен. Повторите позже",
+    "失败":"Не удалось",
+    "成功":"Успешно"
   };
   if (exact[raw]) return exact[raw];
 
-  const contains = [
-    ["未知异常", "Неизвестная ошибка"],
-    ["成功", "успешно"],
-    ["失败", "не удалось"],
-    ["错误", "ошибка"],
-    ["不存在", "не существует"],
-    ["已使用", "уже использован"],
-    ["频繁", "слишком часто"],
-    ["繁忙", "перегружен"]
+  const contains=[
+    ["未知异常","Неизвестная ошибка"],
+    ["成功","успешно"],
+    ["失败","не удалось"],
+    ["错误","ошибка"],
+    ["不存在","не существует"],
+    ["已使用","уже использован"],
+    ["频繁","слишком часто"],
+    ["繁忙","перегружен"]
   ];
-
-  let msg = String(raw);
-  for (const [zh, ru] of contains) {
-    if (msg.includes(zh)) msg = msg.replaceAll(zh, ru);
-  }
+  let msg=String(raw);
+  for (const [zh,ru] of contains){ if(msg.includes(zh)) msg=msg.replaceAll(zh,ru); }
   return msg;
 }
 
-/* 弹窗 UI */
-const dlg = document.getElementById('dlg');
-const dlgTitle = document.getElementById('dlgTitle');
-const dlgBody = document.getElementById('dlgBody');
-const dlgOk = document.getElementById('dlgOk');
-dlgOk.addEventListener('click', () => dlg.style.display = 'none');
-
-function showModal(msg, ok) {
+/* 简易弹窗 */
+const dlg=document.getElementById('dlg');
+const dlgTitle=document.getElementById('dlgTitle');
+const dlgBody=document.getElementById('dlgBody');
+const dlgOk=document.getElementById('dlgOk');
+dlgOk.addEventListener('click',()=>dlg.style.display='none');
+function showModal(msg, ok){
   dlgTitle.innerHTML = ok
     ? '<span class="badge-ok">Готово</span>'
     : '<span class="badge-err">Ошибка отправки</span>';
   dlgBody.textContent = msg;
-  dlg.style.display = 'flex';
+  dlg.style.display='flex';
 }
 
-/* 拦截两个表单，AJAX 提交并在本页弹窗显示结果 */
-function bindAjax(formId) {
-  const form = document.getElementById(formId);
-  const btn = form.querySelector('button[type="submit"]');
+/* 绑定表单：强制同源端点 + 失败回退到新标签 */
+function bindAjax(formId){
+  const form=document.getElementById(formId);
+  const btn=form.querySelector('button[type="submit"]');
 
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
+  form.addEventListener('submit', async (ev)=>{
+    ev.preventDefault();
 
-    const oldText = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = 'Отправка…';
+    // 将任意外域 action 映射为本站 /submitOrder 或 /queryExpireTime
+    const actionUrl=new URL(form.action, location.href);
+    let endpoint=actionUrl.href;
+    if(actionUrl.origin !== location.origin){
+      const lastSeg = actionUrl.pathname.split('/').pop(); // submitOrder / queryExpireTime
+      endpoint = '/'+lastSeg; // 同源，交给 Netlify _redirects 反代
+    }
 
-    try {
-      const body = new URLSearchParams(new FormData(form)).toString();
-      const resp = await fetch(form.action, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8' },
+    const old=btn.textContent; btn.disabled=true; btn.textContent='Отправка…';
+    const body = new URLSearchParams(new FormData(form)).toString();
+
+    try{
+      const resp=await fetch(endpoint,{
+        method:'POST',
+        headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
         body
       });
 
-      let data, txt;
-      try { data = await resp.json(); }
-      catch { txt = await resp.text(); }
+      let data,txt;
+      try{ data=await resp.json(); } catch{ txt=await resp.text(); }
 
-      const code = (data && (data.code ?? data.status)) ?? (resp.ok ? 200 : 500);
-      let msg = (data && (data.msg || data.message || data.data))
-                || txt
-                || (resp.ok ? 'Успешно' : 'Неизвестная ошибка');
+      const code=(data && (data.code ?? data.status)) ?? (resp.ok?200:500);
+      let msg =(data && (data.msg || data.message || data.data)) || txt || (resp.ok?'Успешно':'Неизвестная ошибка');
+      msg=translateZhToRu(msg);
 
-      msg = translateZhToRu(msg);
+      const ok = Number(code)===200 || Number(code)===0 || /успех|успеш/i.test(msg);
+      showModal(msg, ok);
 
-      const isOk = Number(code) === 200 || Number(code) === 0 || /успех|успеш/i.test(msg);
-      showModal(msg, isOk);
-
-    } catch (err) {
-      showModal('Сетевая ошибка. Повторите позже.', false);
-    } finally {
-      btn.disabled = false;
-      btn.textContent = oldText;
+    }catch(err){
+      // 回退：新标签页传统 POST 直达上游
+      try{
+        const fallback=document.createElement('form');
+        fallback.method='POST';
+        fallback.target='_blank';
+        fallback.action=form.action;  // 原始上游地址
+        for(const [k,v] of new FormData(form).entries()){
+          const input=document.createElement('input');
+          input.type='hidden'; input.name=k; input.value=v;
+          fallback.appendChild(input);
+        }
+        document.body.appendChild(fallback);
+        fallback.submit();
+        fallback.remove();
+        showModal('Не удалось получить ответ напрямую. Открыл результат в новой вкладке.', false);
+      }catch(e){
+        showModal('Сетевая ошибка. Повторите позже.', false);
+      }
+    }finally{
+      btn.disabled=false; btn.textContent=old;
     }
   });
 }
+
 bindAjax('form-activate');
 bindAjax('form-check');
 </script>
