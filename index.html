@@ -16,8 +16,12 @@ body{
   margin:0;
   font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
   color:var(--text);
-  /* ① 仅使用原图作为背景（自适应裁剪） */
-  background: url("/assets/img/bg.jpg") center / cover no-repeat fixed;
+  /* ① 使用原图 + 更深的半透明蓝色叠加（两层），保证对比度 */
+  background:
+    radial-gradient(1200px 600px at 20% -10%,
+      rgba(18,40,80,.55), rgba(6,14,28,.6) 35%, rgba(0,0,0,0) 60%),
+    linear-gradient(160deg, rgba(15,23,42,.78), rgba(11,37,89,.78)),
+    url("/assets/img/bg.jpg") center / cover no-repeat fixed;
 }
 @media (max-width:900px){ body{ background-attachment: scroll; } }
 
@@ -35,19 +39,19 @@ body{
   width:auto; object-fit:contain; border-radius:8px;
   box-shadow:0 6px 16px rgba(0,0,0,.28);
 }
-.brand-title{font-weight:700;font-size:22px}
+/* ② 与下方 H1 一样的大（H1 当前为 34px） */
+.brand-title{font-weight:800;font-size:34px;line-height:1.2}
 
-/* 右上角“联系客服”按钮 + 下拉二维码 */
+ /* 右上角“联系客服”按钮 + 下拉二维码 */
 .support{position:relative}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
   background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
 .btn:hover{background:var(--accent2)}
 .btn:disabled{opacity:.7;cursor:not-allowed}
 
-/* 下拉面板（二维码） */
+/* 下拉面板（二维码）——C版基础上维持 3/4 尺寸 */
 .qr-panel{
   position:absolute; right:0; top:calc(100% + 10px);
-  /* ③ 缩小到原来的 3/4：360px → 270px */
   width:min(270px, 75vw); z-index:50;
   background:rgba(17,25,40,.96);
   border:1px solid rgba(255,255,255,.08); border-radius:14px;
@@ -55,7 +59,7 @@ body{
   padding:14px; opacity:0; transform:translateY(-8px); pointer-events:none;
   transition:opacity .18s ease, transform .18s ease;
 }
-.qr-panel::before{ /* 小箭头 */
+.qr-panel::before{
   content:""; position:absolute; right:18px; top:-7px; width:12px; height:12px;
   background:rgba(17,25,40,.96); border:1px solid rgba(255,255,255,.08);
   transform:rotate(45deg); border-right:none; border-bottom:none;
@@ -79,7 +83,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .note{color:var(--muted);font-size:13px;margin-top:12px}
 .footer{margin-top:20px;text-align:center;color:var(--muted);font-size:12px}
 
-/* 弹窗（沿用） */
+/* 弹窗 */
 .modal-backdrop{position:fixed;inset:0;background:rgba(2,8,23,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999}
 .modal{width:min(560px,92vw);background:rgba(17,25,40,.96);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
 .modal-title{font-size:18px;font-weight:700;margin:2px 0 10px}
@@ -92,7 +96,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 <body>
 <div class="container">
   <div class="header">
-    <!-- 左：LOGO + “Duolingo Super”文本 -->
+    <!-- 左：LOGO + “Duolingo Super”文本（字号已加大） -->
     <div class="brand">
       <img src="/assets/img/logo.jpg" alt="Duolingo Super" class="logo">
       <span class="brand-title">Duolingo Super</span>
@@ -139,8 +143,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
 
         <div class="actions">
-          <button class="btn" type="submit">Проверить</button>
-        </div>
+          <button class="btn" type="submit">Проверить</button></div>
 
         <div class="note">Результат откроется в новой вкладке.</div>
       </form>
