@@ -6,21 +6,12 @@
 <title>Duolingo Super — сервис активации</title>
 <style>
 :root{
-  --bg1:#0b1430;
-  --bg2:#0b2559;
-  --text:#e5e7eb;
-  --muted:#9ba3af;
-  --accent:#2563eb;
-  --accent2:#1d4ed8;
-  --card: rgba(17,25,40,.78);
-  --card-border: rgba(255,255,255,.08);
+  --bg1:#0b1430; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
+  --accent:#2563eb; --accent2:#1d4ed8; --card:rgba(17,25,40,.78); --card-border:rgba(255,255,255,.08);
 }
-*{box-sizing:border-box}
-html,body{height:100%}
+*{box-sizing:border-box} html,body{height:100%}
 body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-  color:var(--text);
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--text);
   background:
     radial-gradient(1200px 700px at 20% -10%, rgba(15,30,60,.55), transparent 60%),
     linear-gradient(rgba(9,16,36,.62), rgba(9,16,36,.62)),
@@ -31,24 +22,20 @@ body{
 .brand{display:flex;align-items:center;gap:14px}
 .brand img{width:46px;height:46px;object-fit:contain;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 .brand-title{font-weight:800;font-size:30px;letter-spacing:.2px}
+
 .support{position:relative}
 .support-btn{appearance:none;border:0;cursor:pointer;background:var(--accent);color:#fff;font-weight:600;padding:10px 14px;border-radius:12px;transition:.15s}
 .support-btn:hover{background:var(--accent2)}
-.support-panel{
-  position:absolute;right:0;top:48px;z-index:30;background:var(--card);border:1px solid var(--card-border);
-  border-radius:14px;padding:14px;display:none;min-width:240px;box-shadow:0 10px 40px rgba(0,0,0,.35)
-}
+.support-panel{position:absolute;right:0;top:48px;z-index:30;background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px;display:none;min-width:240px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
 .support.open .support-panel{display:block}
 .support-panel h4{margin:0 0 10px 0;font-size:14px;color:var(--muted);font-weight:600}
 .support-panel img{display:block;width:240px;max-width:70vw;border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+
 h1{margin:10px 0 18px;font-size:30px;line-height:1.25}
-.grid{display:grid;gap:24px}
-@media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
-.card{
-  background:var(--card);backdrop-filter:blur(10px);
-  border:1px solid var(--card-border);border-radius:16px;padding:22px
-}
+.grid{display:grid;gap:24px} @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
+.card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--card-border);border-radius:16px;padding:22px}
 .card h2{margin:0 0 16px}
+
 label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0a1020;color:var(--text);outline:none}
 .input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
@@ -56,25 +43,22 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
 .btn:hover{background:var(--accent2)}
 .note{color:var(--muted);font-size:13px;margin-top:12px}
+
 .footer{margin-top:24px;text-align:center;color:var(--muted);font-size:12px}
+
 /* Modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(2,8,23,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999}
 .modal{width:min(560px,92vw);background:rgba(17,25,40,.96);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
 .modal-title{font-size:18px;font-weight:700;margin:2px 0 10px}
-.modal-body{color:var(--text);line-height:1.55;white-space:pre-wrap}
+.modal-body{color:var(--text);line-height:1.55}
 .modal-actions{margin-top:16px;text-align:right}
 .badge-ok{color:#22c55e}
 .badge-err{color:#f87171}
-/* help tip */
-.help{
-  display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:8px;border-radius:50%;
-  background:#3b82f6;color:#fff;font-weight:800;font-size:12px;text-decoration:none;line-height:1
-}
+
+/* “邮箱帮助”问号 */
+.help{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:8px;border-radius:50%;background:#3b82f6;color:#fff;font-weight:800;font-size:12px;text-decoration:none;line-height:1}
 .help[data-tip]{position:relative}
-.help[data-tip]:hover::after{
-  content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:125%;white-space:nowrap;
-  background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none
-}
+.help[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:125%;white-space:nowrap;background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none}
 </style>
 </head>
 <body>
@@ -84,7 +68,6 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
       <img src="assets/img/logo.jpg" alt="Duolingo" />
       <div class="brand-title">Duolingo Super — сервис активации</div>
     </div>
-
     <div class="support" id="support">
       <button class="support-btn" type="button" id="supportBtn">Связаться с поддержкой</button>
       <div class="support-panel" id="supportPanel">
@@ -99,7 +82,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="grid">
     <div class="card">
       <h2>Активация подписки</h2>
-      <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" autocomplete="on">
+      <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" target="_blank" autocomplete="on">
         <label for="email">
           Почта, привязанная к Duolingo
           <a class="help" href="help.html" target="_blank" data-tip="Как найти почту Duolingo?">?</a>
@@ -114,11 +97,11 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 
     <div class="card">
       <h2>Проверка срока действия</h2>
-      <form id="form-check" action="/.netlify/functions/queryExpireTime" method="post">
+      <form id="form-check" action="/.netlify/functions/queryExpireTime" method="post" target="_blank">
         <label for="check">Код активации</label>
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
         <div class="actions"><button class="btn" type="submit">Проверить</button></div>
-        <div class="note">Результат отобразится на этой странице.</div>
+        <div class="note">Результат откроется в новой вкладке.</div>
       </form>
     </div>
   </div>
@@ -131,26 +114,39 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="modal">
     <div class="modal-title" id="dlgTitle">Сообщение</div>
     <div class="modal-body" id="dlgBody"></div>
-    <div class="modal-actions">
-      <button class="btn" type="button" id="dlgOk">Понятно</button>
-    </div>
+    <div class="modal-actions"><button class="btn" type="button" id="dlgOk">ОК</button></div>
   </div>
 </div>
 
 <script>
-/* 支持面板开关 */
+/* 顶部“联系客服”下拉 */
 (() => {
   const wrap = document.getElementById('support');
   document.getElementById('supportBtn').addEventListener('click', () => wrap.classList.toggle('open'));
-  document.addEventListener('click', e => { if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
+  document.addEventListener('click', (e)=>{ if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
 })();
 
-/* 工具函数 */
+/* —— 工具 —— */
 const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-const two = n => String(n).padStart(2,'0');
-function formatDateRU(d){ return `${two(d.getDate())}/${two(d.getMonth()+1)}/${d.getFullYear()}`; }
+const addYears = (d, n) => { const x = new Date(d); x.setFullYear(x.getFullYear()+n); return x; };
+const fmtRU = d => {
+  const dd = String(d.getDate()).padStart(2,'0');
+  const mm = String(d.getMonth()+1).padStart(2,'0');
+  const yy = d.getFullYear();
+  return `${dd}/${mm}/${yy}`;
+};
 
-/** 中文→俄文（常见返回文案补充） */
+/* 统一的弹窗（支持 HTML 文本），标题/按钮全部用自然俄语 */
+const dlg = document.getElementById('dlg'), dlgTitle = document.getElementById('dlgTitle'),
+      dlgBody = document.getElementById('dlgBody'), dlgOk = document.getElementById('dlgOk');
+dlgOk.addEventListener('click',()=> dlg.style.display='none');
+function showModal(content, ok, asHtml=false){
+  dlgTitle.innerHTML = ok ? '<span class="badge-ok">Успешно</span>' : '<span class="badge-err">Ошибка</span>';
+  if(asHtml) dlgBody.innerHTML = content; else dlgBody.textContent = content;
+  dlg.style.display = 'flex';
+}
+
+/* 中文 → 俄文（兜底翻译，避免中俄混排） */
 function translateZhToRu(raw){
   if(!raw) return raw;
   const exact={
@@ -158,8 +154,8 @@ function translateZhToRu(raw){
     "未知异常！请联系管理员处理！":"Неизвестная ошибка. Обратитесь к администратору.",
     "充值成功":"Активация прошла успешно",
     "激活成功":"Активация прошла успешно",
-    "加入成功":"Успешно!",
-    "查询成功":"Успешно!",
+    "加入成功":"Активация прошла успешно",
+    "查询成功":"Проверка выполнена успешно",
     "订单提交成功":"Заявка успешно отправлена",
     "无效的激活码":"Недействительный код активации",
     "券码不存在或已使用":"Код не существует или уже использован",
@@ -173,80 +169,63 @@ function translateZhToRu(raw){
   };
   if (exact[raw]) return exact[raw];
   const contains=[["未知异常","Неизвестная ошибка"],["成功","успешно"],["失败","не удалось"],["错误","ошибка"],["不存在","не существует"],["已使用","уже использован"],["频繁","слишком часто"],["繁忙","перегружен"]];
-  let msg = String(raw); for (const [zh,ru] of contains) if (msg.includes(zh)) msg = msg.replaceAll(zh,ru);
+  let msg=String(raw); for (const [zh,ru] of contains){ if(msg.includes(zh)) msg=msg.replaceAll(zh,ru); }
   return msg;
 }
 
-/* 弹窗：支持 HTML 正文 */
-const dlg = document.getElementById('dlg');
-const dlgTitle = document.getElementById('dlgTitle');
-const dlgBody = document.getElementById('dlgBody');
-document.getElementById('dlgOk').addEventListener('click',()=>dlg.style.display='none');
-function showModal(msg, ok, asHTML=false){
-  dlgTitle.innerHTML = ok ? '<span class="badge-ok">Готово</span>' : '<span class="badge-err">Ошибка</span>';
-  if(asHTML) dlgBody.innerHTML = msg; else dlgBody.textContent = msg;
-  dlg.style.display='flex';
-}
-
-/* 生成成功话术（本地日期） */
-function buildSuccessMessage(kind, email){
-  const now = new Date();
-  const until = new Date(now); until.setFullYear(until.getFullYear()+1);
-  const a = formatDateRU(now), b = formatDateRU(until);
-
-  if(kind === 'activate'){
-    return `
-      <strong>Подписка активирована!</strong><br><br>
-      Аккаунт: <code>${esc(email||'—')}</code><br>
-      Активация: <b>${a}</b><br>
-      Действует до: <b>${b}</b><br><br>
-      <small>
-        iOS: Откройте приложение Duolingo → значок птицы → шестерёнка — смотрите статус подписки.<br>
-        Android: срок может не отображаться; ориентируйтесь на дату заказа (гарантия 1&nbsp;год).
-      </small>
-    `;
-  }
-  // 查询
+/* 自定义成功文案（不暴露“本地计算+1年”） */
+function successHtmlForActivate(email){
+  const end = fmtRU(addYears(new Date(), 1));
   return `
-    <strong>Код действителен.</strong><br><br>
-    Примерная дата окончания: <b>${b}</b><br>
-    <small>Дата рассчитана локально как текущая дата + 1&nbsp;год.</small>
+    <div style="font-weight:600;margin-bottom:8px">Подписка активирована.</div>
+    <div style="margin:8px 0 0 0">Примерная дата окончания: <strong>${end}</strong></div>
+    <div style="opacity:.8;margin-top:10px">Проверьте статус в приложении Duolingo.</div>
+  `;
+}
+function successHtmlForQuery(){
+  const end = fmtRU(addYears(new Date(), 1));
+  return `
+    <div style="font-weight:600;margin-bottom:8px">Код действителен.</div>
+    <div>Примерная дата окончания: <strong>${end}</strong></div>
   `;
 }
 
-/* 绑定：用 JSON 提交；成功则使用自定义俄文结果 */
-function bindAjax(formId, kind){
-  const form = document.getElementById(formId);
-  const btn  = form.querySelector('button[type="submit"]');
+/* 绑定两个表单：仍走你现在稳定的 Netlify Functions */
+function bindAjax(formId){
+  const form=document.getElementById(formId);
+  const btn=form.querySelector('button[type="submit"]');
 
   form.addEventListener('submit', async (ev)=>{
     ev.preventDefault();
     const old=btn.textContent; btn.disabled=true; btn.textContent='Отправка…';
 
-    // JSON 负载
-    const payload = Object.fromEntries(new FormData(form).entries());
-    const endpoint = form.action; // 已是 /.netlify/functions/...
+    const body = new URLSearchParams(new FormData(form)).toString();
+    const endpoint = new URL(form.action, location.href).href;
 
     try{
       const resp = await fetch(endpoint, {
         method:'POST',
-        headers:{ 'Content-Type':'application/json;charset=UTF-8' },
-        body: JSON.stringify(payload)
+        headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
+        body
       });
 
-      let data, txt;
-      try{ data = await resp.json(); } catch{ txt = await resp.text(); }
-
+      let data, txt; try{ data=await resp.json(); } catch{ txt=await resp.text(); }
       const code = (data && (data.code ?? data.status)) ?? (resp.ok ? 200 : 500);
-      const ok = Number(code) === 200 || Number(code) === 0 || resp.ok;
+      let msg  = (data && (data.msg || data.message || data.data)) || txt || (resp.ok ? 'Успешно' : 'Неизвестная ошибка');
 
-      if(ok){
-        const html = buildSuccessMessage(kind, payload.email);
-        showModal(html, true, true);
-      }else{
-        const raw = (data && (data.msg || data.message || data.data)) || txt || 'Неизвестная ошибка';
-        showModal(translateZhToRu(raw), false);
+      const isOk = Number(code)===200 || /成功|успеш/i.test(msg);
+
+      if (isOk){
+        if (formId==='form-activate'){
+          const email = form.querySelector('[name="email"]').value || '';
+          showModal(successHtmlForActivate(esc(email)), true, true);
+        } else {
+          showModal(successHtmlForQuery(), true, true);
+        }
+      } else {
+        showModal(translateZhToRu(msg), false, false);
       }
+
     }catch(e){
       showModal('Сетевая ошибка. Повторите позже.', false);
     }finally{
@@ -254,9 +233,8 @@ function bindAjax(formId, kind){
     }
   });
 }
-
-bindAjax('form-activate','activate');
-bindAjax('form-check','check');
+bindAjax('form-activate');
+bindAjax('form-check');
 </script>
 </body>
 </html>
