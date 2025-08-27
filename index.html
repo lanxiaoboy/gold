@@ -152,7 +152,8 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
       <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" target="_blank" autocomplete="on">
         <label for="email">
           Почта, привязанная к Duolingo
-          <a class="help" href="help.html" target="_blank" data-tip="Как найти почту Duolingo?">?</a>
+          <!-- 仅此处改动：指向 help-email.html -->
+          <a class="help" href="help-email.html" target="_blank" rel="noopener" data-tip="Как найти почту Duolingo?">?</a>
         </label>
         <input id="email" name="email" type="email" required class="input" placeholder="name@example.com">
 
