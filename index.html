@@ -6,140 +6,62 @@
 <title>Duolingo Super — сервис активации</title>
 <style>
 :root{
-  --bg1:#0b1430;
-  --bg2:#0b2559;
-  --text:#e5e7eb;
-  --muted:#9ba3af;
-  --accent:#2563eb;
-  --accent2:#1d4ed8;
-  --card: rgba(17,25,40,.78);
-  --card-border: rgba(255,255,255,.08);
+  --bg1:#0b1430; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
+  --accent:#2563eb; --accent2:#1d4ed8; --card:rgba(17,25,40,.78); --card-border:rgba(255,255,255,.08);
 }
-
-*{box-sizing:border-box}
-html,body{height:100%}
+*{box-sizing:border-box} html,body{height:100%}
 body{
-  margin:0;
-  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
-  color:var(--text);
+  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--text);
   background:
     radial-gradient(1200px 700px at 20% -10%, rgba(15,30,60,.55), transparent 60%),
     linear-gradient(rgba(9,16,36,.62), rgba(9,16,36,.62)),
     url('assets/img/bg.jpg') center/cover fixed no-repeat;
 }
-
 .container{max-width:1100px;margin:0 auto;padding:28px 28px 34px}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-
-/* 左侧：logo + 标题 */
 .brand{display:flex;align-items:center;gap:14px}
 .brand img{width:46px;height:46px;object-fit:contain;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 .brand-title{font-weight:800;font-size:30px;letter-spacing:.2px}
-
-/* 右侧：联系客服 + 下拉二维码 */
 .support{position:relative}
-.support-btn{
-  appearance:none;border:0;cursor:pointer;
-  background:var(--accent);color:#fff;font-weight:600;
-  padding:10px 14px;border-radius:12px;transition:.15s;
-}
+.support-btn{appearance:none;border:0;cursor:pointer;background:var(--accent);color:#fff;font-weight:600;padding:10px 14px;border-radius:12px;transition:.15s}
 .support-btn:hover{background:var(--accent2)}
-.support-panel{
-  position:absolute;right:0;top:48px;z-index:30;
-  background:var(--card);border:1px solid var(--card-border);
-  border-radius:14px;padding:14px;display:none;min-width:240px;
-  box-shadow:0 10px 40px rgba(0,0,0,.35);
-}
+.support-panel{position:absolute;right:0;top:48px;z-index:30;background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px;display:none;min-width:240px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
 .support.open .support-panel{display:block}
 .support-panel h4{margin:0 0 10px 0;font-size:14px;color:var(--muted);font-weight:600}
-.support-panel img{
-  display:block;width:240px;max-width:70vw;border-radius:10px;
-  border:1px solid rgba(255,255,255,.06);
-}
-
-/* 标题 */
+.support-panel img{display:block;width:240px;max-width:70vw;border-radius:10px;border:1px solid rgba(255,255,255,.06)}
 h1{margin:10px 0 18px;font-size:30px;line-height:1.25}
-
-/* 栅格 + 卡片 */
 .grid{display:grid;gap:24px}
 @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
-.card{
-  background:var(--card);
-  backdrop-filter:blur(10px);
-  border:1px solid var(--card-border);
-  border-radius:16px;padding:22px
-}
+.card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--card-border);border-radius:16px;padding:22px}
 .card h2{margin:0 0 16px}
-
-/* 表单 */
 label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
-.input{
-  width:100%;padding:14px 16px;border-radius:12px;
-  border:1px solid rgba(255,255,255,.12);
-  background:#0a1020;color:var(--text);outline:none
-}
+.input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0a1020;color:var(--text);outline:none}
 .input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
 .actions{margin-top:14px}
-.btn{
-  display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;
-  background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s
-}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
 .btn:hover{background:var(--accent2)}
 .note{color:var(--muted);font-size:13px;margin-top:12px}
-
-/* 结果卡片（成功时展示） */
-.result{
-  margin-top:20px;
-  background:var(--card);
-  border:1px solid var(--card-border);
-  border-radius:16px;
-  padding:18px 20px;
-  display:none;
-}
-.result h3{margin:0 0 10px;font-size:18px}
-.result p{margin:6px 0;color:#cbd5e1}
-.result .ok{color:#22c55e;font-weight:700}
-.result .row{display:flex;gap:10px;flex-wrap:wrap}
-.result .tag{background:rgba(37,99,235,.15);border:1px solid rgba(37,99,235,.35);color:#dbeafe;padding:6px 10px;border-radius:10px}
-
-/* footer */
 .footer{margin-top:24px;text-align:center;color:var(--muted);font-size:12px}
-
-/* Modal（失败/异常继续用弹窗） */
+/* Modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(2,8,23,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999}
 .modal{width:min(560px,92vw);background:rgba(17,25,40,.96);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
 .modal-title{font-size:18px;font-weight:700;margin:2px 0 10px}
 .modal-body{color:var(--text);line-height:1.55;white-space:pre-wrap}
 .modal-actions{margin-top:16px;text-align:right}
-.badge-ok{color:#22c55e}
-.badge-err{color:#f87171}
-
-/* 邮箱帮助问号 */
-.help{
-  display:inline-flex;align-items:center;justify-content:center;
-  width:18px;height:18px;margin-left:8px;border-radius:50%;
-  background:#3b82f6;color:#fff;font-weight:800;font-size:12px;
-  text-decoration:none;line-height:1
-}
+.badge-ok{color:#22c55e}.badge-err{color:#f87171}
+/* help tip */
+.help{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:8px;border-radius:50%;background:#3b82f6;color:#fff;font-weight:800;font-size:12px;text-decoration:none;line-height:1}
 .help[data-tip]{position:relative}
-.help[data-tip]:hover::after{
-  content:attr(data-tip);
-  position:absolute;left:50%;transform:translateX(-50%);
-  bottom:125%;white-space:nowrap;
-  background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);
-  padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none
-}
+.help[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:125%;white-space:nowrap;background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none}
 </style>
 </head>
 <body>
 <div class="container">
-  <!-- 顶部：Logo + 标题 + 支持 -->
   <div class="header">
     <div class="brand">
       <img src="assets/img/logo.jpg" alt="Duolingo" />
       <div class="brand-title">Duolingo Super — сервис активации</div>
     </div>
-
     <div class="support" id="support">
       <button class="support-btn" type="button" id="supportBtn">Связаться с поддержкой</button>
       <div class="support-panel" id="supportPanel">
@@ -149,50 +71,33 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
     </div>
   </div>
 
-  <!-- 副标题 -->
   <h1>Быстрая активация и проверка ваучера</h1>
 
-  <!-- 两列卡片 -->
   <div class="grid">
-    <!-- 激活 -->
     <div class="card">
       <h2>Активация подписки</h2>
-      <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" target="_blank" autocomplete="on">
-        <label for="email">
-          Почта, привязанная к Duolingo
+      <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" autocomplete="on">
+        <label for="email">Почта, привязанная к Duolingo
           <a class="help" href="help-email.html" target="_blank" data-tip="Как найти почту Duolingo?">?</a>
         </label>
         <input id="email" name="email" type="email" required class="input" placeholder="name@example.com">
-
         <label for="code" style="margin-top:12px">Код активации (ваучер)</label>
         <input id="code" name="couponCode" required class="input" placeholder="Введите код">
-
-        <div class="actions">
-          <button class="btn" type="submit">Активировать</button>
-        </div>
-
+        <div class="actions"><button class="btn" type="submit">Активировать</button></div>
         <div class="note">Если окно с результатом не открылось — разрешите всплывающие окна в браузере.</div>
       </form>
     </div>
 
-    <!-- 查询 -->
     <div class="card">
       <h2>Проверка срока действия</h2>
-      <form id="form-check" action="/.netlify/functions/queryExpireTime" method="post" target="_blank">
+      <form id="form-check" action="/.netlify/functions/queryExpireTime" method="post">
         <label for="check">Код активации</label>
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
-
-        <div class="actions">
-          <button class="btn" type="submit">Проверить</button>
-        </div>
-
-        <div class="note">Результат откроется в новой вкладке.</div>
+        <div class="actions"><button class="btn" type="submit">Проверить</button></div>
+        <div class="note">Результат отобразится во всплывающем окне.</div>
       </form>
     </div>
   </div>
-
-  <!-- 成功结果卡片（默认隐藏） -->
-  <div id="resultCard" class="result" aria-live="polite"></div>
 
   <div class="footer">© 2019–2025. Этот сайт использует общедоступные конечные точки для обработки запросов.</div>
 </div>
@@ -202,74 +107,19 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <div class="modal">
     <div class="modal-title" id="dlgTitle">Сообщение</div>
     <div class="modal-body" id="dlgBody"></div>
-    <div class="modal-actions">
-      <button class="btn" type="button" id="dlgOk">Понятно</button>
-    </div>
+    <div class="modal-actions"><button class="btn" type="button" id="dlgOk">Понятно</button></div>
   </div>
 </div>
 
 <script>
-/* 打开/关闭“联系客服”下拉 */
 (() => {
   const wrap = document.getElementById('support');
   const btn  = document.getElementById('supportBtn');
   btn.addEventListener('click', () => wrap.classList.toggle('open'));
-  document.addEventListener('click', (e)=>{ if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
+  document.addEventListener('click', e => { if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
 })();
 
-/** 工具：格式化为 DD/MM/YYYY（按你的要求使用斜杠） */
-function formatRuDate(dateStr){
-  if(!dateStr) return '';
-  // 先尝试直接拆分 YYYY-MM-DD
-  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(dateStr).trim());
-  if (m) return `${m[3]}/${m[2]}/${m[1]}`;
-  // 兜底用 Date 解析
-  const d = new Date(dateStr);
-  if (isNaN(d)) return String(dateStr);
-  const dd = String(d.getDate()).padStart(2,'0');
-  const mm = String(d.getMonth()+1).padStart(2,'0');
-  const yy = d.getFullYear();
-  return `${dd}/${mm}/${yy}`;
-}
-
-/** 从返回文本/对象中尽量提取“激活时间/有效期至” */
-function extractDates(payload){
-  let act='', exp='';
-  const tryStr = [];
-  if (typeof payload === 'string') tryStr.push(payload);
-  if (payload && typeof payload === 'object'){
-    if (typeof payload.msg === 'string') tryStr.push(payload.msg);
-    if (typeof payload.data === 'string') tryStr.push(payload.data);
-    if (payload.activateTime) act = payload.activateTime;
-    if (payload.expireTime || payload.expiredTime) exp = payload.expireTime || payload.expiredTime;
-  }
-  const text = tryStr.join('\n');
-
-  // 1) 优先匹配中文标签
-  if (!act){
-    const m1 = /激活时间[:：]?\s*([0-9]{4}-[0-9]{2}-[0-9]{2})/i.exec(text);
-    if (m1) act = m1[1];
-  }
-  if (!exp){
-    const m2 = /有效期至[:：]?\s*([0-9]{4}-[0-9]{2}-[0-9]{2})/i.exec(text);
-    if (m2) exp = m2[1];
-  }
-
-  // 2) 如果仍没有，抓两段 ISO 日期作为兜底
-  if ((!act || !exp) && text){
-    const all = text.match(/\b\d{4}-\d{2}-\d{2}\b/g);
-    if (all && all.length>=2){
-      if (!act) act = all[0];
-      if (!exp) exp = all[1];
-    } else if (all && all.length===1){
-      if (!act) act = all[0];
-    }
-  }
-
-  return { act: act? formatRuDate(act):'', exp: exp? formatRuDate(exp):'' };
-}
-
-/** 中文 → 俄文 翻译（先精确匹配，再包含替换） */
+/* 中文→俄文 */
 function translateZhToRu(raw){
   if(!raw) return raw;
   const exact={
@@ -285,126 +135,49 @@ function translateZhToRu(raw){
     "余额不足":"Недостаточно средств",
     "请求过于频繁":"Слишком частые запросы",
     "服务器繁忙":"Сервер перегружен. Повторите позже",
-    "失败":"Не удалось",
-    "成功":"Успешно"
+    "失败":"Не удалось","成功":"Успешно"
   };
   if (exact[raw]) return exact[raw];
-
-  const contains=[
-    ["未知异常","Неизвестная ошибка"],
-    ["成功","успешно"],
-    ["失败","не удалось"],
-    ["错误","ошибка"],
-    ["不存在","не существует"],
-    ["已使用","уже использован"],
-    ["频繁","слишком часто"],
-    ["繁忙","перегружен"]
-  ];
-  let msg=String(raw);
-  for (const [zh,ru] of contains){ if(msg.includes(zh)) msg=msg.replaceAll(zh,ru); }
-  return msg;
+  const contains=[["未知异常","Неизвестная ошибка"],["成功","успешно"],["失败","не удалось"],["错误","ошибка"],["不存在","не существует"],["已使用","уже использован"],["频繁","слишком часто"],["繁忙","перегружен"]];
+  let msg=String(raw); for (const [zh,ru] of contains){ if(msg.includes(zh)) msg=msg.replaceAll(zh,ru); } return msg;
 }
 
-/* 简易弹窗（仍用于错误/异常） */
-const dlg=document.getElementById('dlg');
-const dlgTitle=document.getElementById('dlgTitle');
-const dlgBody=document.getElementById('dlgBody');
-const dlgOk=document.getElementById('dlgOk');
-dlgOk.addEventListener('click',()=>dlg.style.display='none');
+/* Modal */
+const dlg=document.getElementById('dlg'), dlgTitle=document.getElementById('dlgTitle'), dlgBody=document.getElementById('dlgBody');
+document.getElementById('dlgOk').addEventListener('click',()=>dlg.style.display='none');
 function showModal(msg, ok){
-  dlgTitle.innerHTML = ok
-    ? '<span class="badge-ok">Готово</span>'
-    : '<span class="badge-err">Ошибка отправки</span>';
-  dlgBody.textContent = msg;
-  dlg.style.display='flex';
+  dlgTitle.innerHTML = ok ? '<span class="badge-ok">Готово</span>' : '<span class="badge-err">Ошибка отправки</span>';
+  dlgBody.textContent = msg; dlg.style.display='flex';
 }
 
-/* 渲染“成功结果卡片”并滚动到可视区域 */
-const resultCard = document.getElementById('resultCard');
-function renderSuccessCard(info){
-  const { act, exp } = info || {};
-  resultCard.innerHTML = `
-    <h3 class="ok">Поздравляем! Вы успешно присоединились к семейному плану Duolingo.</h3>
-    <p>Закройте приложение Duolingo в фоне и откройте снова — увидите привилегии Super.</p>
-    <div class="row" style="margin-top:8px">
-      <span class="tag">Дата активации: <strong>${act || '—'}</strong></span>
-      <span class="tag">Действительно до: <strong>${exp || '—'}</strong></span>
-    </div>
-    <p style="margin-top:10px">iOS: Главная → птичка справа вверху → шестерёнка → срок подписки</p>
-    <p>Android: по настройкам сервиса срок может не отображаться. Ориентируйтесь на дату заказа — гарантия 1 год.</p>
-  `;
-  resultCard.style.display = 'block';
-  resultCard.scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-/* 绑定表单：使用 Netlify Functions 的同源端点；成功用卡片，失败用弹窗；失败再回退新标签页 */
-function bindAjax(formId){
+/* 统一 JSON 提交 */
+function bindJson(formId){
   const form=document.getElementById(formId);
   const btn=form.querySelector('button[type="submit"]');
-
   form.addEventListener('submit', async (ev)=>{
     ev.preventDefault();
-
-    const actionUrl=new URL(form.action, location.href);
-    let endpoint=actionUrl.href;
+    const dataObj={}; for (const [k,v] of new FormData(form).entries()) dataObj[k]=String(v||'').trim();
 
     const old=btn.textContent; btn.disabled=true; btn.textContent='Отправка…';
-    const body = new URLSearchParams(new FormData(form)).toString();
-
     try{
-      const resp=await fetch(endpoint,{
+      const resp=await fetch(form.action,{
         method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'},
-        body
+        headers:{'Content-Type':'application/json;charset=UTF-8','Accept':'application/json,text/plain,*/*'},
+        body: JSON.stringify(dataObj)
       });
-
-      let data,txt;
-      try{ data=await resp.json(); } catch{ txt=await resp.text(); }
-
+      let data, txt; try{ data=await resp.json(); }catch{ txt=await resp.text(); }
       const code=(data && (data.code ?? data.status)) ?? (resp.ok?200:500);
       let msg =(data && (data.msg || data.message || data.data)) || txt || (resp.ok?'Успешно':'Неизвестная ошибка');
-
-      // 如果是激活表单且成功 → 展示卡片
-      const isActivate = formId === 'form-activate';
-      const ok = Number(code)===200 || Number(code)===0 || /успех|успеш/i.test(translateZhToRu(msg));
-
-      if (isActivate && ok){
-        // 从返回中尽量解析日期
-        const dates = extractDates(data || txt || msg);
-        renderSuccessCard(dates);
-      } else {
-        // 其它情况（包括查询表单或失败）走弹窗
-        msg = translateZhToRu(msg);
-        showModal(msg, ok);
-      }
-
-    }catch(err){
-      // 回退：新标签页传统 POST 直达上游
-      try{
-        const fallback=document.createElement('form');
-        fallback.method='POST';
-        fallback.target='_blank';
-        fallback.action=form.action;
-        for(const [k,v] of new FormData(form).entries()){
-          const input=document.createElement('input');
-          input.type='hidden'; input.name=k; input.value=v;
-          fallback.appendChild(input);
-        }
-        document.body.appendChild(fallback);
-        fallback.submit();
-        fallback.remove();
-        showModal('Не удалось получить ответ напрямую. Открыл результат в новой вкладке.', false);
-      }catch(e){
-        showModal('Сетевая ошибка. Повторите позже.', false);
-      }
-    }finally{
-      btn.disabled=false; btn.textContent=old;
-    }
+      msg=translateZhToRu(msg);
+      const ok = Number(code)===200 || Number(code)===0 || /успех|успеш/i.test(msg);
+      showModal(msg, ok);
+    }catch(e){
+      showModal('Сетевая ошибка. Повторите позже.', false);
+    }finally{ btn.disabled=false; btn.textContent=old; }
   });
 }
-
-bindAjax('form-activate');
-bindAjax('form-check');
+bindJson('form-activate');
+bindJson('form-check');
 </script>
 </body>
 </html>
