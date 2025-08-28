@@ -7,8 +7,7 @@
 <style>
 :root{
   --bg1:#0b1430; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
-  --accent:#2563eb; --accent2:#1d4ed8; --card:rgba(17,25,40,.78);
-  --card-border:rgba(255,255,255,.08);
+  --accent:#2563eb; --accent2:#1d4ed8; --card: rgba(17,25,40,.78); --card-border: rgba(255,255,255,.08);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
@@ -21,29 +20,44 @@ body{
 }
 .container{max-width:1100px;margin:0 auto;padding:28px 28px 34px}
 .header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+
+/* 左侧：logo + 标题 */
 .brand{display:flex;align-items:center;gap:14px}
 .brand img{width:46px;height:46px;object-fit:contain;border-radius:10px;box-shadow:0 1px 4px rgba(0,0,0,.25)}
 .brand-title{font-weight:800;font-size:30px;letter-spacing:.2px}
+
+/* 右侧：联系客服 + 下拉二维码 */
 .support{position:relative}
 .support-btn{appearance:none;border:0;cursor:pointer;background:var(--accent);color:#fff;font-weight:600;padding:10px 14px;border-radius:12px;transition:.15s}
 .support-btn:hover{background:var(--accent2)}
-.support-panel{position:absolute;right:0;top:48px;z-index:30;background:var(--card);border:1px solid var(--card-border);border-radius:14px;padding:14px;display:none;min-width:240px;box-shadow:0 10px 40px rgba(0,0,0,.35)}
+.support-panel{
+  position:absolute;right:0;top:48px;z-index:30;background:var(--card);border:1px solid var(--card-border);
+  border-radius:14px;padding:14px;display:none;min-width:240px;box-shadow:0 10px 40px rgba(0,0,0,.35);
+}
 .support.open .support-panel{display:block}
 .support-panel h4{margin:0 0 10px 0;font-size:14px;color:var(--muted);font-weight:600}
 .support-panel img{display:block;width:240px;max-width:70vw;border-radius:10px;border:1px solid rgba(255,255,255,.06)}
+
+/* 标题 */
 h1{margin:10px 0 18px;font-size:30px;line-height:1.25}
+
+/* 栅格 + 卡片 */
 .grid{display:grid;gap:24px}
 @media(min-width:900px){.grid{grid-template-columns:1fr 1fr}}
 .card{background:var(--card);backdrop-filter:blur(10px);border:1px solid var(--card-border);border-radius:16px;padding:22px}
 .card h2{margin:0 0 16px}
+
+/* 表单 */
 label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .input{width:100%;padding:14px 16px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0a1020;color:var(--text);outline:none}
 .input:focus{border-color:rgba(99,102,241,.7);box-shadow:0 0 0 3px rgba(99,102,241,.25)}
 .actions{margin-top:14px}
 .btn{display:inline-flex;align-items:center;justify-content:center;padding:12px 18px;border-radius:12px;background:var(--accent);color:#fff;font-weight:600;border:0;cursor:pointer;transition:.15s}
 .btn:hover{background:var(--accent2)}
-.note{color:var(--muted);font-size:13px;margin-top:12px}
+
+/* footer */
 .footer{margin-top:24px;text-align:center;color:var(--muted);font-size:12px}
+
 /* Modal */
 .modal-backdrop{position:fixed;inset:0;background:rgba(2,8,23,.55);backdrop-filter:blur(2px);display:none;align-items:center;justify-content:center;z-index:9999}
 .modal{width:min(560px,92vw);background:rgba(17,25,40,.96);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:20px}
@@ -52,14 +66,22 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
 .modal-actions{margin-top:16px;text-align:right}
 .badge-ok{color:#22c55e}
 .badge-err{color:#f87171}
-/* “?” 提示 */
-.help{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:8px;border-radius:50%;background:#3b82f6;color:#fff;font-weight:800;font-size:12px;text-decoration:none;line-height:1}
+
+/* 邮箱帮助问号 */
+.help{
+  display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;margin-left:8px;border-radius:50%;
+  background:#3b82f6;color:#fff;font-weight:800;font-size:12px;text-decoration:none;line-height:1
+}
 .help[data-tip]{position:relative}
-.help[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:125%;white-space:nowrap;background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none}
+.help[data-tip]:hover::after{
+  content:attr(data-tip);position:absolute;left:50%;transform:translateX(-50%);bottom:125%;white-space:nowrap;
+  background:rgba(20,28,48,.95);color:#e5e7eb;border:1px solid var(--card-border);padding:6px 10px;border-radius:8px;font-size:12px;pointer-events:none
+}
 </style>
 </head>
 <body>
 <div class="container">
+  <!-- 顶部：Logo + 标题 + 支持 -->
   <div class="header">
     <div class="brand">
       <img src="assets/img/logo.jpg" alt="Duolingo" />
@@ -78,6 +100,7 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
   <h1>Быстрая активация и проверка ваучера</h1>
 
   <div class="grid">
+    <!-- 激活 -->
     <div class="card">
       <h2>Активация подписки</h2>
       <form id="form-activate" action="/.netlify/functions/submitOrder" method="post" autocomplete="on">
@@ -90,18 +113,24 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
         <label for="code" style="margin-top:12px">Код активации (ваучер)</label>
         <input id="code" name="couponCode" required class="input" placeholder="Введите код">
 
-        <div class="actions"><button class="btn" type="submit">Активировать</button></div>
-        <div class="note">Если окно с результатом не открылось — разрешите всплывающие окна в браузере.</div>
+        <div class="actions">
+          <button class="btn" type="submit">Активировать</button>
+        </div>
+        <!-- 说明文字应你的要求已移除 -->
       </form>
     </div>
 
+    <!-- 查询 -->
     <div class="card">
       <h2>Проверка срока действия</h2>
       <form id="form-check" action="/.netlify/functions/queryExpireTime" method="post">
         <label for="check">Код активации</label>
         <input id="check" name="couponCode" required class="input" placeholder="Введите код для проверки">
-        <div class="actions"><button class="btn" type="submit">Проверить</button></div>
-        <div class="note">Ответ будет показан в этом окне.</div>
+
+        <div class="actions">
+          <button class="btn" type="submit">Проверить</button>
+        </div>
+        <!-- 说明文字应你的要求已移除 -->
       </form>
     </div>
   </div>
@@ -115,23 +144,21 @@ label{display:block;margin:6px 0;color:var(--muted);font-size:14px}
     <div class="modal-title" id="dlgTitle">Сообщение</div>
     <div class="modal-body" id="dlgBody"></div>
     <div class="modal-actions">
-      <button class="btn" type="button" id="dlgOk" aria-label="OK">OK</button>
+      <button class="btn" type="button" id="dlgOk">OK</button>
     </div>
   </div>
 </div>
 
 <script>
-/* 固定 UI 文案 */
-const UI = { ok:'OK', titleOk:'Готово', titleErr:'Ошибка' };
-document.addEventListener('DOMContentLoaded',()=>{ const b=document.getElementById('dlgOk'); if(b) b.textContent=UI.ok; });
-
-/* 客服下拉 */
-(()=>{const wrap=document.getElementById('support');const btn=document.getElementById('supportBtn');
-btn.addEventListener('click',()=>wrap.classList.toggle('open'));
-document.addEventListener('click',e=>{if(!wrap.contains(e.target)) wrap.classList.remove('open');});
+/* 打开/关闭“联系客服”下拉 */
+(() => {
+  const wrap = document.getElementById('support');
+  const btn  = document.getElementById('supportBtn');
+  btn.addEventListener('click', () => wrap.classList.toggle('open'));
+  document.addEventListener('click', (e)=>{ if (!wrap.contains(e.target)) wrap.classList.remove('open'); });
 })();
 
-/** 中文→俄文：覆盖常见后端消息，并在未识别时兜底成俄文 */
+/** 中文 → 俄文 翻译（先精确匹配，再包含替换） */
 function translateZhToRu(raw){
   if(!raw) return raw;
   const exact={
@@ -141,26 +168,15 @@ function translateZhToRu(raw){
     "激活成功":"Активация прошла успешно",
     "订单提交成功":"Заявка успешно отправлена",
     "无效的激活码":"Недействительный код активации",
-    "券码不存在":"Код ваучера не существует",
-    "券码已使用":"Код ваучера уже использован",
-    "券码错误":"Неверный код ваучера",
-    "券码无效":"Недействительный код ваучера",
+    "券码不存在或已使用":"Код не существует или уже использован",
     "参数错误":"Неверные параметры запроса",
-    "参数不合法":"Недопустимые параметры",
-    "参数非法":"Недопустимые параметры",
-    "参数缺失":"Отсутствуют обязательные параметры",
-    "邮箱格式不正确":"Неверный формат e-mail",
-    "邮箱不正确":"Неверный e-mail",
-    "请求方式不支持":"Метод запроса не поддерживается",
-    "请求失败":"Запрос не выполнен",
-    "服务器繁忙":"Сервер перегружен. Повторите позже",
+    "验证码错误":"Неверный проверочный код",
     "余额不足":"Недостаточно средств",
+    "请求过于频繁":"Слишком частые запросы",
+    "服务器繁忙":"Сервер перегружен. Повторите позже",
     "失败":"Не удалось",
     "成功":"Успешно",
-    "查询成功":"Запрос выполнен успешно",
-    "查询失败":"Не удалось выполнить запрос",
-    "激活失败":"Не удалось активировать",
-    "请稍后重试":"Повторите позже"
+    "参数不合法":"Недопустимые параметры"
   };
   if (exact[raw]) return exact[raw];
 
@@ -171,60 +187,73 @@ function translateZhToRu(raw){
     ["错误","ошибка"],
     ["不存在","не существует"],
     ["已使用","уже использован"],
-    ["无效","недействителен"],
     ["频繁","слишком часто"],
-    ["繁忙","перегружен"],
-    ["参数","параметр"]
+    ["繁忙","перегружен"]
   ];
   let msg=String(raw);
-  for(const [zh,ru] of contains){ if(msg.includes(zh)) msg=msg.replaceAll(zh,ru); }
-
-  // 如果仍包含中文字符，兜底为俄文通用提示
-  if (/[\u4e00-\u9fff]/.test(msg)) msg = 'Произошла ошибка. Повторите позже.';
+  for (const [zh,ru] of contains){ if(msg.includes(zh)) msg=msg.replaceAll(zh,ru); }
   return msg;
 }
 
-/* 日期：俄罗斯书写 DD/MM/YYYY */
-function formatRU(d){const dd=String(d.getDate()).padStart(2,'0');const mm=String(d.getMonth()+1).padStart(2,'0');const yy=d.getFullYear();return `${dd}/${mm}/${yy}`;}
-function datePlusOneYear(){const d=new Date();d.setFullYear(d.getFullYear()+1);return d;}
-
-/* 弹窗 */
+/* 简易弹窗 */
 const dlg=document.getElementById('dlg');
 const dlgTitle=document.getElementById('dlgTitle');
 const dlgBody=document.getElementById('dlgBody');
-document.getElementById('dlgOk').addEventListener('click',()=>dlg.style.display='none');
-function showModal(msg,isOk){
-  dlgTitle.innerHTML = isOk?`<span class="badge-ok">${UI.titleOk}</span>`:`<span class="badge-err">${UI.titleErr}</span>`;
-  dlgBody.textContent = msg; dlg.style.display='flex';
+const dlgOk=document.getElementById('dlgOk');
+dlgOk.addEventListener('click',()=>dlg.style.display='none');
+function showModal(msg, ok){
+  dlgTitle.innerHTML = ok ? '<span class="badge-ok">Успех</span>' : '<span class="badge-err">Ошибка</span>';
+  dlgBody.textContent = msg;
+  dlg.style.display='flex';
 }
 
-/* 绑定：仅文案完善，不改原有提交流程（JSON） */
-function bindAjax(formId, kind){
+/* 绑定表单（JSON 方式），可选：成功时追加提示 */
+function bindAjax(formId, appendSuccessHint){
   const form=document.getElementById(formId);
   const btn=form.querySelector('button[type="submit"]');
+
   form.addEventListener('submit', async (ev)=>{
     ev.preventDefault();
-    const payload = Object.fromEntries(new FormData(form).entries());
+
+    const endpoint = new URL(form.action, location.href).href; // 本站 Functions
     const old=btn.textContent; btn.disabled=true; btn.textContent='Отправка…';
+
     try{
-      const resp=await fetch(form.action,{method:'POST',headers:{'Content-Type':'application/json;charset=UTF-8'},body:JSON.stringify(payload)});
-      let data,txt; try{data=await resp.json();}catch{txt=await resp.text();}
+      const payload = Object.fromEntries(new FormData(form).entries());
+      const resp=await fetch(endpoint,{
+        method:'POST',
+        headers:{ 'Content-Type':'application/json;charset=UTF-8' },
+        body: JSON.stringify(payload)
+      });
+
+      let data, txt;
+      try{ data=await resp.json(); } catch{ txt=await resp.text(); }
+
       const code=(data && (data.code ?? data.status)) ?? (resp.ok?200:500);
       let msg =(data && (data.msg || data.message || data.data)) || txt || (resp.ok?'Успешно':'Неизвестная ошибка');
       msg=translateZhToRu(msg);
+
       const ok = Number(code)===200 || Number(code)===0 || /успех|успеш/i.test(msg);
-      if(ok){
-        const end=formatRU(datePlusOneYear());
-        if(kind==='activate'){ msg = `Подписка успешно активирована.\nПримерная дата окончания: ${end}`; }
-        if(kind==='query'){   msg = `Код действителен.\nПримерная дата окончания: ${end}`; }
+
+      // 仅在“激活成功”时追加提示
+      if (ok && appendSuccessHint){
+        msg += '\n\nПожалуйста, перезапустите приложение Duolingo, чтобы проверить результат.';
       }
+
       showModal(msg, ok);
-    }catch(e){ showModal('Сетевая ошибка. Повторите позже.', false); }
-    finally{ btn.disabled=false; btn.textContent=old; }
+
+    }catch(err){
+      showModal('Сетевая ошибка. Повторите позже.', false);
+    }finally{
+      btn.disabled=false; btn.textContent=old;
+    }
   });
 }
-bindAjax('form-activate','activate');
-bindAjax('form-check','query');
+
+// 激活：成功时在弹窗追加“请重启 Duolingo 查验结果”
+bindAjax('form-activate', true);
+// 查询：正常显示，不追加提示
+bindAjax('form-check', false);
 </script>
 </body>
 </html>
