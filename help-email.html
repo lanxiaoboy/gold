@@ -6,141 +6,81 @@
 <title>Как найти свой e-mail в Duolingo</title>
 <style>
 :root{
-  --bg1:#0b1430; --bg2:#0b2559; --text:#e5e7eb; --muted:#9ba3af;
-  --accent:#2563eb; --accent2:#1d4ed8; --card:rgba(17,25,40,.78);
-  --card-border:rgba(255,255,255,.08);
+  --bg1:#0b1430;
+  --bg2:#0b2559;
+  --text:#e5e7eb;
+  --muted:#9ba3af;
+  --accent:#2563eb;
+  --accent2:#1d4ed8;
+  --card: rgba(17,25,40,.78);
+  --card-border: rgba(255,255,255,.08);
 }
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
-  margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--text);
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+  color:var(--text);
   background:
     radial-gradient(1200px 700px at 20% -10%, rgba(15,30,60,.55), transparent 60%),
     linear-gradient(rgba(9,16,36,.62), rgba(9,16,36,.62)),
     url('assets/img/bg.jpg') center/cover fixed no-repeat;
 }
 
-/* Layout */
-.container{max-width:950px;margin:0 auto;padding:24px}
+/* layout */
+.container{max-width:980px;margin:0 auto;padding:28px 20px 36px}
 .header{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.logo{width:40px;height:40px;border-radius:10px;object-fit:contain;box-shadow:0 1px 4px rgba(0,0,0,.25)}
-h1{margin:6px 0 6px;font-size:28px;line-height:1.25}
-.lead{margin:0 0 18px;color:var(--muted)}
-
-.grid{display:grid;gap:16px}
-@media (min-width:960px){ .grid{grid-template-columns:1fr 1fr 1fr} }
+.brand-logo{width:44px;height:44px;border-radius:10px;object-fit:contain;box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.title{font-weight:800;font-size:26px;letter-spacing:.2px}
 
 .card{
-  background:var(--card); backdrop-filter:blur(10px);
-  border:1px solid var(--card-border); border-radius:14px; padding:14px;
+  background:var(--card);
+  backdrop-filter:blur(10px);
+  border:1px solid var(--card-border);
+  border-radius:16px;
+  padding:18px;
 }
-.card figure{margin:0}
-.card img{
-  width:100%; height:auto; border-radius:10px; display:block;
-  border:1px solid rgba(255,255,255,.06); cursor:zoom-in;
-}
-.card figcaption{margin-top:10px; color:var(--text); font-size:14px; line-height:1.5}
-.step{display:inline-block;background:rgba(99,102,241,.2);color:#c7d2fe;
-  font-weight:700;padding:2px 8px;border-radius:8px;margin-right:8px}
 
-/* Button */
-.actions{margin:20px 0 8px; display:flex; gap:10px; flex-wrap:wrap}
-.btn{
+/* images */
+.guide img{
+  width:100%;
+  height:auto;
+  display:block;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.08);
+  box-shadow:0 10px 34px rgba(0,0,0,.35);
+  margin-bottom:16px;
+}
+
+/* back button */
+.back{
   display:inline-flex;align-items:center;justify-content:center;
-  padding:12px 16px;border-radius:12px;background:var(--accent);
-  color:#fff;font-weight:600;border:0;cursor:pointer;text-decoration:none
+  padding:12px 16px;border-radius:12px;border:0;cursor:pointer;
+  background:var(--accent);color:#fff;font-weight:600;text-decoration:none;
+  margin-top:14px;transition:.15s;
 }
-.btn:hover{background:var(--accent2)}
-.muted{color:var(--muted); font-size:13px}
+.back:hover{background:var(--accent2)}
 
-/* Lightbox */
-.lb{position:fixed;inset:0;background:rgba(2,8,23,.85);display:none;align-items:center;justify-content:center;z-index:9999}
-.lb img{max-width:min(92vw,1200px); max-height:90vh; border-radius:12px}
-.lb.open{display:flex}
+@media (min-width:900px){
+  .title{font-size:28px}
+}
 </style>
 </head>
 <body>
   <div class="container">
-    <!-- 顶部：logo + 标题 -->
     <div class="header">
-      <img class="logo" src="assets/img/logo.jpg" alt="Duolingo" />
-      <h1>Как найти свой e-mail в Duolingo</h1>
-    </div>
-    <p class="lead">
-      Следуйте шагам ниже, чтобы увидеть адрес, привязанный к вашему аккаунту Duolingo.
-    </p>
-
-    <!-- 三步图文 -->
-    <div class="grid">
-      <section class="card">
-        <figure>
-          <img src="assets/img/pic1.webp" loading="lazy" alt="Откройте Duolingo → профиль → Настройки (шестерёнка)" data-zoom>
-          <figcaption>
-            <span class="step">Шаг 1</span>
-            Откройте приложение Duolingo. Зайдите в <b>профиль</b>, затем нажмите на
-            значок <b>«Настройки»</b> (шестерёнка) в правом верхнем углу.
-          </figcaption>
-        </figure>
-      </section>
-
-      <section class="card">
-        <figure>
-          <img src="assets/img/pic2.webp" loading="lazy" alt="Раздел «Аккаунт» в настройках Duolingo" data-zoom>
-          <figcaption>
-            <span class="step">Шаг 2</span>
-            В разделе <b>«Аккаунт»</b> найдите поле <b>«E-mail»</b>.
-            У некоторых пользователей адрес может иметь служебный вид наподобие
-            <b>ph.***@phone.duolingo.com</b> — именно его и указывайте при активации.
-          </figcaption>
-        </figure>
-      </section>
-
-      <section class="card">
-        <figure>
-          <img src="assets/img/pic3.webp" loading="lazy" alt="Изменение или подтверждение e-mail" data-zoom>
-          <figcaption>
-            <span class="step">Шаг 3</span>
-            Если почта пустая или не подтверждена — добавьте/подтвердите e-mail
-            прямо в этом разделе, а затем вернитесь на сайт для активации или проверки.
-          </figcaption>
-        </figure>
-      </section>
+      <img class="brand-logo" src="assets/img/logo.jpg" alt="Duolingo" />
+      <div class="title">Как найти свой e-mail в Duolingo</div>
     </div>
 
-    <!-- 操作区 -->
-    <div class="actions">
-      <a class="btn" href="index.html">⟵ На главную</a>
+    <div class="card guide">
+      <!-- 仅保留三张图，内容说明已在图片上 -->
+      <img src="assets/img/pic1.webp" alt="Шаг 1: откройте профиль" loading="lazy">
+      <img src="assets/img/pic2.webp" alt="Шаг 2: кнопка настроек" loading="lazy">
+      <img src="assets/img/pic3.webp" alt="Шаг 3: e-mail в разделе Профиль" loading="lazy">
+
+      <a class="back" href="index.html">Назад к активации</a>
     </div>
-    <p class="muted">
-      Подсказка: адрес должен совпадать с тем, что указан в приложении. Если вы входите через Apple/Google и не видите e-mail —
-      добавьте его в настройках Duolingo.
-    </p>
   </div>
-
-  <!-- 轻量灯箱 -->
-  <div class="lb" id="lightbox" aria-hidden="true" role="dialog">
-    <img id="lbImg" alt="">
-  </div>
-
-<script>
-  // 简易图片放大：点击图片 → 全屏预览；点遮罩或 Esc 关闭
-  const lb = document.getElementById('lightbox');
-  const lbImg = document.getElementById('lbImg');
-  document.querySelectorAll('[data-zoom]').forEach(img=>{
-    img.addEventListener('click', ()=>{
-      lbImg.src = img.src;
-      lbImg.alt = img.alt;
-      lb.classList.add('open');
-      lb.setAttribute('aria-hidden','false');
-    });
-  });
-  lb.addEventListener('click', ()=>closeLb());
-  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeLb(); });
-  function closeLb(){
-    lb.classList.remove('open');
-    lb.setAttribute('aria-hidden','true');
-    lbImg.removeAttribute('src');
-  }
-</script>
 </body>
 </html>
